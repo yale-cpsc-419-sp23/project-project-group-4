@@ -1,7 +1,10 @@
+from . import db
+from flask_login import UserMixin
+from sqlalchemy.sql import func
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+
 
 class People(db.Model):
     __tablename__ = 'people'
@@ -56,3 +59,4 @@ class User(db.Model): # TO BE DELETED
     password = db.Column(db.String(100)) # TO BE DELETED
     joined_date = db.Column(db.DateTime, default=datetime.utcnow) # TO BE DELETED
     is_admin = db.Column(db.Boolean, default=False) # TO BE DELETED
+
