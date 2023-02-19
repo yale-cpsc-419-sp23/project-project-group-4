@@ -10,7 +10,7 @@
 
 ## 🤔 How to run?
 
-- Install the dependencies
+1. Install the dependencies
     - `pip install -r requirements.txt`
-- Run the app with `python main.py` in the main directory
+2. Run the app with `python main.py` in the main directory
 
