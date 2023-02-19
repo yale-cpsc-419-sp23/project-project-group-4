@@ -1,6 +1,6 @@
 # project-project-group-4
 
-## Updates Timeline
+## 🗓 Updates Timeline
 
 - February 19: Skeleton code done
     - We have a code skeleton
@@ -8,7 +8,7 @@
         - the `templates` folder (inside the `website` folder) contains the frontend code
         - the `static` folder (inside the `website` folder) contains the static files (images, css, js, etc.)
 
-## How to run?
+## 🤔 How to run?
 
 - Install the dependencies
     - `pip install -r requirements.txt`
