@@ -39,3 +39,20 @@ class FoundObjects(db.Model):
     found_date = db.Column(db.DateTime, default=datetime.utcnow)
     place_id = db.Column(db.Integer, db.ForeignKey('places.id'))
     classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
+
+
+class Note(db.Model): # TO BE DELETED
+    __tablename__ = 'notes'
+    id = db.Column(db.Integer, primary_key=True)
+    note = db.Column(db.String(1000))
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+    lost_id = db.Column(db.Integer, db.ForeignKey('lost_objects.id'))
+    found_id = db.Column(db.Integer, db.ForeignKey('found_objects.id'))
+
+class User(db.Model): # TO BE DELETED
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    joined_date = db.Column(db.DateTime, default=datetime.utcnow)
+    is_admin = db.Column(db.Boolean, default=False)
