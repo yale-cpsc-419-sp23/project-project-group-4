@@ -44,19 +44,17 @@ class FoundObjects(db.Model):
     classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
 
 
-class Note(db.Model): # TO BE DELETED
-    __tablename__ = 'notes' # TO BE DELETED
-    id = db.Column(db.Integer, primary_key=True) # TO BE DELETED
-    note = db.Column(db.String(1000)) # TO BE DELETED
-    date = db.Column(db.DateTime, default=datetime.utcnow) # TO BE DELETED
-    lost_id = db.Column(db.Integer, db.ForeignKey('lost_objects.id')) # TO BE DELETED
-    found_id = db.Column(db.Integer, db.ForeignKey('found_objects.id')) # TO BE DELETED
+class Note(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    data = db.Column(db.String(10000))
+    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-class User(db.Model): # TO BE DELETED
-    __tablename__ = 'users' # TO BE DELETED
-    id = db.Column(db.Integer, primary_key=True) # TO BE DELETED
-    username = db.Column(db.String(100), unique=True) # TO BE DELETED
-    password = db.Column(db.String(100)) # TO BE DELETED
-    joined_date = db.Column(db.DateTime, default=datetime.utcnow) # TO BE DELETED
-    is_admin = db.Column(db.Boolean, default=False) # TO BE DELETED
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(150), unique=True)
+    password = db.Column(db.String(150))
+    first_name = db.Column(db.String(150))
+    notes = db.relationship('Note')
 
