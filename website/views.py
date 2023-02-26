@@ -37,5 +37,5 @@ def delete_note():
     return jsonify({})
 
 @views.route('/index')
-def home():
+def index():
     return render_template("index.html")
