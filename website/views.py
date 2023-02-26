@@ -35,3 +35,7 @@ def delete_note():
             db.session.commit()
 
     return jsonify({})
+
+@views.route('/index')
+def home():
+    return render_template("index.html")
