@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <h1>Post a Lost Item</h1>
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <form method="POST" action="{{ url_for('post_loss') }}">
+            <label for="loster">Lost by:</label>
+            <input type="text" name="loster" required>
+
+            <label for="description">Description:</label>
+            <textarea name="description" required></textarea>
+
+            <label for="place">Place:</label>
+            <select name="place" required>
+                {% for place in places %}
+                    <option value="{{ place.id }}">{{ place.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="classifier">Classifier:</label>
+            <select name="classifier" required>
+                {% for classifier in classifiers %}
+                    <option value="{{ classifier.id }}">{{ classifier.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+{% endblock %}
