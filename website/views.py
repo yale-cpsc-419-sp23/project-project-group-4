@@ -36,29 +36,21 @@ def delete_note():
 
     return jsonify({})
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField
-from wtforms.validators import DataRequired
 
-class PostLossForm(FlaskForm):
-    loster = StringField('Lost by', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    place = SelectField('Place', coerce=int, validators=[DataRequired()])
-    classifier = SelectField('Classifier', coerce=int, validators=[DataRequired()])
-
-
-@views.route('/post-loss', methods=['GET', 'POST'])
+@views.route('/post_loss', methods=['GET', 'POST'])
 def post_loss():
-    form = PostLossForm()
-    if form.validate_on_submit():
-        lost_object = LostObjects(
-            loster=form.loster.data,
-            description=form.description.data,
-            place_id=form.place.data,
-            classifier_id=form.classifier.data
-        )
-        db.session.add(lost_object)
-        db.session.commit()
-        flash('Lost item posted successfully!', 'success')
-        # return redirect(url_for('views.home')) 
-    return render_template('post_loss.html', form=form)
+    if request.method == 'POST':
+        loster = current_user.email
+        description = request.form.get('description')
+        place = request.form.get('place')
+        classifier = request.form.get('classifier')
+
+        if len(description) < 1:
+            flash('Description is too short!', category='error')
+        else:
+            new_lost_object = LostObjects(loster=loster, description=description, place_id=place, classifier_id=classifier)
+            db.session.add(new_lost_object)
+            db.session.commit()
+            flash('Object added!', category='success')
+
+    return render_template("post_loss.html", user=current_user)
