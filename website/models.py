@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 class People(db.Model):
     __tablename__ = 'people'
-    username = db.Column(db.String(100), primary_key=True)
+    username = db.Column(db.String(100), primary_key=True) 
     joined_date = db.Column(db.DateTime, default=datetime.utcnow)
     num_lost_items = db.Column(db.Integer, default=0)
     num_found_items = db.Column(db.Integer, default=0)
@@ -57,4 +57,3 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     first_name = db.Column(db.String(150))
     notes = db.relationship('Note')
-
