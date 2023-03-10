@@ -54,3 +54,10 @@ def post_loss():
             flash('Object added!', category='success')
 
     return render_template("post_loss.html", user=current_user)
+
+# make a route to see all the lost objects
+@views.route('/lost_objects', methods=['GET'])
+def lost_objects():
+    # query all the lost objects
+    lost_objects = LostObjects.query.all()
+    return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
