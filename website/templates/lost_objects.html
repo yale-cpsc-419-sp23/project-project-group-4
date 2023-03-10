@@ -3,13 +3,14 @@
 
 {% block content %}
 
-    <!-- show all the lost objects. This was passed in as `lost_objects` -->
+    <!-- show all the lost objects. This was passed in as `lost_objects`. There should also be a little x that deletes the object. remember the route is /delete-lost-object/<id> -->
     {% for lost_object in lost_objects %}
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ lost_object.loster }}</h5>
-                <h6 class="card-subtitle">{{ lost_object.place }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{ lost_object.place }}</h6>
                 <p class="card-text">{{ lost_object.description }}</p>
+                <a href="/delete-lost-object/{{ lost_object.id }}" class="card-link">Found!</a>
             </div>
         </div>
     {% endfor %}

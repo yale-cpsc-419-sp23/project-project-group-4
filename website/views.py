@@ -51,3 +51,14 @@ def lost_objects():
     # query all the lost objects
     lost_objects = LostObjects.query.all()
     return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
+
+# make a route to delete a lost object use a route that would be like /delete-lost-object/<id>
+@views.route('/delete-lost-object/<id>', methods=['GET'])
+def delete_lost_object(id):
+    # query the lost object with the id
+    lost_object = LostObjects.query.filter_by(id=id).first()
+    # delete the lost object
+    db.session.delete(lost_object)
+    db.session.commit()
+    # kleep the user on the same page
+    return redirect(url_for('views.lost_objects'))
