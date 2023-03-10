@@ -31,11 +31,11 @@
         <div class="navbar-nav">
           {% if user.is_authenticated %}
           <a class="nav-item nav-link" id="home" href="/">Home</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           <a class="nav-item nav-link" id="post_loss" href="/post_loss">Post Loss</a>
           <a class="nav-item nav-link" id="post_found" href="/post_found">Post Found</a>
           <a class="nav-item nav-link" id="lost objects" href="/lost_objects">View Lost</a>
           <a class="nav-item nav-link" id="found objects" href="/found_objects">View Found</a>
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
           {% else %}
           <a class="nav-item nav-link" id="login" href="/login">Login</a>
           <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
