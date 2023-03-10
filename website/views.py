@@ -8,20 +8,10 @@ views = Blueprint('views', __name__)
 
 
 @views.route('/', methods=['GET', 'POST'])
-@login_required
-def home():
-    if request.method == 'POST': 
-        note = request.form.get('note')#Gets the note from the HTML 
+# @login_required
+def index():
+    return render_template("index.html")
 
-        if len(note) < 1:
-            flash('Note is too short!', category='error') 
-        else:
-            new_note = Note(data=note, user_id=current_user.id)  #providing the schema for the note 
-            db.session.add(new_note) #adding the note to the database 
-            db.session.commit()
-            flash('Note added!', category='success')
-
-    return render_template("home.html", user=current_user)
 
 
 @views.route('/delete-note', methods=['POST'])
@@ -61,8 +51,3 @@ def lost_objects():
     # query all the lost objects
     lost_objects = LostObjects.query.all()
     return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
-
-# route for the initial page before CAS login
-@views.route('/index')
-def index():
-    return render_template("index.html")
