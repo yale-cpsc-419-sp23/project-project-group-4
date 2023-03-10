@@ -61,3 +61,8 @@ def lost_objects():
     # query all the lost objects
     lost_objects = LostObjects.query.all()
     return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
+
+# route for the initial page before CAS login
+@views.route('/index')
+def index():
+    return render_template("index.html")
