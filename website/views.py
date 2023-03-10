@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
-from .models import Note, LostObjects
+from .models import Note, LostObjects, FoundObjects
 from . import db
 import json
 
@@ -62,3 +62,39 @@ def delete_lost_object(id):
     db.session.commit()
     # kleep the user on the same page
     return redirect(url_for('views.lost_objects'))
+
+@views.route('/post_found', methods=['GET', 'POST'])
+def post_found():
+    if request.method == 'POST':
+        founder = current_user.email
+        description = request.form.get('description')
+        place = request.form.get('place')
+        classifier = request.form.get('classifier')
+
+        if len(description) < 1:
+            flash('Description is too short!', category='error')
+        else:
+            new_found_object = FoundObjects(founder=founder, description=description, place_id=place, classifier_id=classifier)
+            db.session.add(new_found_object)
+            db.session.commit()
+            flash('Object added!', category='success')
+
+    return render_template("post_found.html", user=current_user)
+
+# make a route to see all the lost objects
+@views.route('/found_objects', methods=['GET'])
+def found_objects():
+    # query all the lost objects
+    found_objects = FoundObjects.query.all()
+    return render_template("found_objects.html", user=current_user, found_objects=found_objects)
+
+# make a route to delete a lost object use a route that would be like /delete-lost-object/<id>
+@views.route('/delete-found-object/<id>', methods=['GET'])
+def delete_found_object(id):
+    # query the lost object with the id
+    found_object = FoundObjects.query.filter_by(id=id).first()
+    # delete the lost object
+    db.session.delete(found_object)
+    db.session.commit()
+    # kleep the user on the same page
+    return redirect(url_for('views.found_objects'))

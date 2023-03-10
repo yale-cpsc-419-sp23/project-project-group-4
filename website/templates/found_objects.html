@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Post a Found Item{% endblock %} 
+
+
+{% block content %}
+
+    <!-- show all the found objects. This was passed in as `found_objects`. There should also be a little x that deletes the object. remember the route is /delete-found-object/<id> -->
+    {% for found_object in found_objects %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ found_object.founder }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ found_object.place }}</h6>
+                <p class="card-text">{{ found_object.description }}</p>
+                <a href="/delete-found-object/{{ found_object.id }}" class="card-link">Recovered!</a>
+            </div>
+        </div>
+    {% endfor %}
+
+
+{% endblock %}
