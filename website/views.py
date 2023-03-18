@@ -3,6 +3,8 @@ from flask_login import login_required, current_user
 from .models import Note, LostObjects, FoundObjects
 from . import db
 import json
+# we want to import the file logger.py
+from logger import logger
 
 views = Blueprint('views', __name__)
 
@@ -10,8 +12,9 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 # @login_required
 def index():
+    # log the gettting of the index page
+    logger.debug('Getting the index page')
     return render_template("index.html")
-
 
 
 @views.route('/delete-note', methods=['POST'])
@@ -98,3 +101,22 @@ def delete_found_object(id):
     db.session.commit()
     # kleep the user on the same page
     return redirect(url_for('views.found_objects'))
+
+# make a /search-lost-objects route that would take a query string and search for the lost objects
+@views.route('/search-lost-objects', methods=['GET', 'POST'])
+def search_lost_objects():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        # log thre queru
+        logger.debug(f'Query: {query}')
+        if query:
+            # log the query
+            logger.debug(f'Query: {query}')
+            # query the lost objects
+            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query)).all()
+            return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
+        else:
+            # do nothing
+            return redirect(url_for('views.lost_objects'))
+    
+
