@@ -3,11 +3,61 @@
 
 {% block content %}
 
+
     <!-- add a search bar to search for lost objects. The route is /search-lost-objects -->
-    <form method="POST" action="/search-lost-objects" class="needs-validation" novalidate>
+    <form method="POST" action="/search-lost-objects" class="needs-validation" autocomplete="off" novalidate>
         <div class="form-group">
             <label for="search">Search for a lost item:</label>
+            <input type="text" name="query" class="form-control" list="object_list" required>
+            <datalist id="object_list">
+                {% for lost_object in lost_objects %}
+                    <option value="{{ lost_object.description }}">
+                {% endfor %}
+            </datalist>
+            <div class="invalid-feedback">
+                Please provide a valid name.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-- add a search bar to search for lost objects by location. The route is /search-lost-objects-by-location -->
+    <form method="POST" action="/search-lost-object-location" class="needs-validation" novalidate>
+        <div class="form-group">
+            <label for="search">Search for a lost item by location:</label>
             <input type="text" name="query" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a valid name.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-- add a search bar to search for lost objects by classifier. The route is /search-lost-object-classifier -->
+    <form method="POST" action="/search-lost-object-classifier" class="needs-validation" novalidate>
+        <div class="form-group">
+            <label for="search">Search for a lost item by classifier:</label>
+            <input type="text" name="query" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a valid name.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+
+    </form>
+
+    <!-- add a calendar to search for lost objects by date. The route is /search-lost-object-date. The form should allow for an initial date and an end date. If nothing is entered, it should require the user to enter a date. -->
+    <form method="POST" action="/search-lost-object-date" class="needs-validation" novalidate>
+        <div class="form-group">
+            <label for="search">Earliest Lost Date:</label>
+            <input type="date" name="earliest_date" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a valid name.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="search">Latest Lost Date:</label>
+            <input type="date" name="latest_date" class="form-control" required>
             <div class="invalid-feedback">
                 Please provide a valid name.
             </div>
@@ -17,15 +67,18 @@
 
 
 
+
     <!-- show all the lost objects. This was passed in as `lost_objects`. There should also be a little x that deletes the object. remember the route is /delete-lost-object/<id> -->
     {% for lost_object in lost_objects %}
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ lost_object.loster }}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">{{ lost_object.place }}</h6>
+                <!-- show the object's location on the left and the object's classifier on the right -->
+                <h6 class="card-subtitle mb-2 text-muted">{{ lost_object.place }} | {{ lost_object.classifier }}</h6>
                 <p class="card-text">{{ lost_object.description }}</p>
                 <a href="/delete-lost-object/{{ lost_object.id }}" class="card-link">Found!</a>
             </div>
+
         </div>
     {% endfor %}
 

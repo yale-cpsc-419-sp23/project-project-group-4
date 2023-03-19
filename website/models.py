@@ -30,8 +30,10 @@ class LostObjects(db.Model):
     loster = db.Column(db.String(100), db.ForeignKey('people.username'))
     description = db.Column(db.String(1000))
     lost_date = db.Column(db.DateTime, default=datetime.utcnow)
-    place_id = db.Column(db.Integer, db.ForeignKey('places.id'))
-    classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
+    # place_id = db.Column(db.Integer, db.ForeignKey('places.id'))
+    place = db.Column(db.String(100))
+    # classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
+    classifier = db.Column(db.String(100))
 
 class FoundObjects(db.Model):
     __tablename__ = 'found_objects'
@@ -40,8 +42,10 @@ class FoundObjects(db.Model):
     name = db.Column(db.String(100))
     description = db.Column(db.String(1000))
     found_date = db.Column(db.DateTime, default=datetime.utcnow)
-    place_id = db.Column(db.Integer, db.ForeignKey('places.id'))
-    classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
+    # place_id = db.Column(db.Integer, db.ForeignKey('places.id'))
+    place = db.Column(db.String(100))
+    # classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
+    classifier = db.Column(db.String(100))
 
 
 class Note(db.Model):

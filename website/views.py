@@ -41,7 +41,7 @@ def post_loss():
         if len(description) < 1:
             flash('Description is too short!', category='error')
         else:
-            new_lost_object = LostObjects(loster=loster, description=description, place_id=place, classifier_id=classifier)
+            new_lost_object = LostObjects(loster=loster, description=description, place=place, classifier=classifier)
             db.session.add(new_lost_object)
             db.session.commit()
             flash('Object added!', category='success')
@@ -112,11 +112,110 @@ def search_lost_objects():
         if query:
             # log the query
             logger.debug(f'Query: {query}')
-            # query the lost objects
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query)).all()
+            # query the lost objects (filter the lost objects by the query: they must not necessarily be exactly the same, but as long as there are some words that are the same in the classifier or description, then it should be returned)
+            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) | LostObjects.classifier.contains(query)).all()
             return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
         else:
             # do nothing
             return redirect(url_for('views.lost_objects'))
+        
+# make a /search-lost-object-location route that would take a query string and search for the lost objects by location
+@views.route('/search-lost-object-location', methods=['GET', 'POST'])
+def search_lost_object_location():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        # log thre queru
+        logger.debug(f'Query: {query}')
+        if query:
+            # log the query
+            logger.debug(f'Query: {query}')
+            # query the lost objects
+            lost_objects = LostObjects.query.filter(LostObjects.place.contains(query)).all()
+            return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
+        else:
+            # do nothing
+            return redirect(url_for('views.lost_objects'))
+
+# make a /search-lost-object-classifier route that would take a query string and search for the lost objects by classifier
+@views.route('/search-lost-object-classifier', methods=['GET', 'POST'])
+def search_lost_object_classifier():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        # log thre queru
+        logger.debug(f'Query: {query}')
+        if query:
+            # log the query
+            logger.debug(f'Query: {query}')
+            # query the lost objects
+            lost_objects = LostObjects.query.filter(LostObjects.classifier.contains(query)).all()
+            return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
+        else:
+            # do nothing
+            return redirect(url_for('views.lost_objects'))
+        
+# make a /search-lost-object-date route that would take a query string and search for the lost objects by date. We return the lost objects whose lost_date falls within the range of the query. Recall the form looks like <form method="POST" action="/search-lost-object-date" class="needs-validation" novalidate> <div class="form-group"> <label for="search">Earliest Lost Date:</label> <input type="date" name="earliest_date" class="form-control" required> <div class="invalid-feedback"> Please provide a valid name. </div> </div> <div class="form-group"> <label for="search">Latest Lost Date:</label> <input type="date" name="latest_date" class="form-control" required> <div class="invalid-feedback"> Please provide a valid name. </div> </div> <button type="submit" class="btn btn-primary">Search</button> </form>
+@views.route('/search-lost-object-date', methods=['GET', 'POST'])
+def search_lost_object_date():
+    if request.method == 'POST':
+        earliest_date = request.form.get('earliest_date')
+        latest_date = request.form.get('latest_date')
+        # log the query
+        logger.debug(f'Earliest Date: {earliest_date}')
+        logger.debug(f'Latest Date: {latest_date}')
+        # query the lost objects
+        lost_objects = LostObjects.query.filter(LostObjects.lost_date.between(earliest_date, latest_date)).all()
+        return render_template("lost_objects.html", user=current_user, lost_objects=lost_objects)
+    else:
+        # do nothing
+        return redirect(url_for('views.lost_objects'))
+# make a /search-found-objects route that would take a query string and search for the lost objects
+@views.route('/search-found-objects', methods=['GET', 'POST'])
+def search_found_objects():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        # log thre queru
+        logger.debug(f'Query: {query}')
+        if query:
+            # log the query
+            logger.debug(f'Query: {query}')
+            # query the lost objects
+            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query)).all()
+            return render_template("found_objects.html", user=current_user, found_objects=found_objects)
+        else:
+            # do nothing
+            return redirect(url_for('views.found_objects'))
     
+# make a /search-found-object-location route that would take a query string and search for the lost objects by location
+@views.route('/search-found-object-location', methods=['GET', 'POST'])
+def search_found_object_location():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        # log thre queru
+        logger.debug(f'Query: {query}')
+        if query:
+            # log the query
+            logger.debug(f'Query: {query}')
+            # query the lost objects
+            found_objects = FoundObjects.query.filter(FoundObjects.place.contains(query)).all()
+            return render_template("found_objects.html", user=current_user, found_objects=found_objects)
+        else:
+            # do nothing
+            return redirect(url_for('views.found_objects'))
+        
+# make a /search-found-object-classifier route that would take a query string and search for the lost objects by classifier
+@views.route('/search-found-object-classifier', methods=['GET', 'POST'])
+def search_found_object_classifier():
+    if request.method == 'POST':
+        query = request.form.get('query')
+        # log thre queru
+        logger.debug(f'Query: {query}')
+        if query:
+            # log the query
+            logger.debug(f'Query: {query}')
+            # query the lost objects
+            found_objects = FoundObjects.query.filter(FoundObjects.classifier.contains(query)).all()
+            return render_template("found_objects.html", user=current_user, found_objects=found_objects)
+        else:
+            # do nothing
+            return redirect(url_for('views.found_objects'))
 

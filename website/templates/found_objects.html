@@ -3,6 +3,29 @@
 
 {% block content %}
 
+    <!-- add a search bar to search for found objects. The route is /search-found-objects -->
+    <form method="POST" action="/search-found-objects" class="needs-validation" novalidate>
+        <div class="form-group">
+            <label for="search">Search for a found item:</label>
+            <input type="text" name="query" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a valid name.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-- add a search bar to search for found objects by location. The route is /search-found-objects-by-location -->
+    <form method="POST" action="/search-found-object-location" class="needs-validation" novalidate>
+        <div class="form-group">
+            <label for="search">Search for a found item by location:</label>
+            <input type="text" name="query" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a valid name.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+
     <!-- show all the found objects. This was passed in as `found_objects`. There should also be a little x that deletes the object. remember the route is /delete-found-object/<id> -->
     {% for found_object in found_objects %}
         <div class="card">
