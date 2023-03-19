@@ -77,7 +77,7 @@ def post_found():
         if len(description) < 1:
             flash('Description is too short!', category='error')
         else:
-            new_found_object = FoundObjects(founder=founder, description=description, place_id=place, classifier_id=classifier)
+            new_found_object = FoundObjects(founder=founder, description=description, place=place, classifier=classifier)
             db.session.add(new_found_object)
             db.session.commit()
             flash('Object added!', category='success')
@@ -218,4 +218,6 @@ def search_found_object_classifier():
         else:
             # do nothing
             return redirect(url_for('views.found_objects'))
+        
+
 
