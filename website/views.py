@@ -9,12 +9,25 @@ from logger import logger
 views = Blueprint('views', __name__)
 
 
-@views.route('/', methods=['GET', 'POST'])
+@views.route('/', methods=['GET'])
 # @login_required
 def index():
     # log the gettting of the index page
     logger.debug('Getting the index page')
     return render_template("index.html")
+
+@views.route('/home', methods=['GET', 'POST'])
+# @login_required
+def home():
+    # log the gettting of the index page
+    logger.debug('Getting the home page')
+    if request.method == 'POST':
+        note = request.form.get('note')
+        new_note = Note(data=note, user_id=current_user.id)
+        db.session.add(new_note)
+        db.session.commit()
+        return render_template("home.html", user=current_user)
+    return render_template("home.html", user=current_user)
 
 
 @views.route('/delete-note', methods=['POST'])
@@ -219,5 +232,6 @@ def search_found_object_classifier():
             # do nothing
             return redirect(url_for('views.found_objects'))
         
+
 
 
