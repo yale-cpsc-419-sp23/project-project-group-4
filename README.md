@@ -22,7 +22,7 @@
         - Keyword suggestions
         - Date range search based on dates of when items were lost or found
         - UI improvements to make website more user friendly
-        - Note: The update lost items feature proposed for the MVP was completed in this iteration ✔️
+        - Note: The update lost items feature proposed for the MVP was completed in this iteration ✅
 
 ## 🤔 How to run?
 
