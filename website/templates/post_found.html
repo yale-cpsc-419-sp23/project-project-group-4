@@ -8,20 +8,39 @@
 
 
     <div class="container">
-        <form method="POST" action="/post_found" class="needs-validation" novalidate>
+        <form method="POST" action="/post_found" class="needs-validation">
             <div class="form-group">
-                <label for="founder">Found by:</label>
-                <input type="text" name="founder" class="form-control" required>
+                <label for="classifier">Classifier:</label>
+                <select name="classifier" class="form-control" required>
+                    <option value="">Select a classifier</option>
+                    <optgroup label="Electronic">
+                        <option value="Laptop">Laptop</option>
+                        <option value="Phone">Phone</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Headphone">Headphone</option>
+                        <option value="Charger">Charger</option>
+                    </optgroup>
+                    <optgroup label="Clothing">
+                        <option value="Shirt">Shirt</option>
+                        <option value="Pants">Pants</option>
+                        <option value="Shoes">Shoes</option>
+                        <option value="Hat">Hat</option>
+                    </optgroup>
+                    <optgroup label="Miscellaneous">
+                        <option value="Wallet">Wallet</option>
+                        <option value="Keys">Keys</option>
+                    </optgroup>
+                </select>
                 <div class="invalid-feedback">
-                    Please provide a valid name.
+                    Please select a classifier.
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea name="description" class="form-control" required></textarea>
+                <label for="found_date">Date:</label>
+                <input type="date" name="found_date" class="form-control" required />
                 <div class="invalid-feedback">
-                    Please provide a description of the found item.
+                    Please provide a valid date.
                 </div>
             </div>
 
@@ -60,29 +79,10 @@
             </div>
 
             <div class="form-group">
-                <label for="classifier">Classifier:</label>
-                <select name="classifier" class="form-control" required>
-                    <option value="">Select a classifier</option>
-                    <optgroup label="Electronic">
-                        <option value="Laptop">Laptop</option>
-                        <option value="Phone">Phone</option>
-                        <option value="Tablet">Tablet</option>
-                        <option value="Headphone">Headphone</option>
-                        <option value="Charger">Charger</option>
-                    </optgroup>
-                    <optgroup label="Clothing">
-                        <option value="Shirt">Shirt</option>
-                        <option value="Pants">Pants</option>
-                        <option value="Shoes">Shoes</option>
-                        <option value="Hat">Hat</option>
-                    </optgroup>
-                    <optgroup label="Miscellaneous">
-                        <option value="Wallet">Wallet</option>
-                        <option value="Keys">Keys</option>
-                    </optgroup>
-                </select>
+                <label for="description">Description:</label>
+                <textarea name="description" class="form-control" required></textarea>
                 <div class="invalid-feedback">
-                    Please select a classifier.
+                    Please provide a description of the found item.
                 </div>
             </div>
 
