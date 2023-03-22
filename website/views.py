@@ -13,7 +13,7 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET'])
 # @login_required
 def index():
-    # log the getting of the index page
+    # Log the getting of the index page
     logger.debug('Getting the index page')
     return render_template("index.html")
 
