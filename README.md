@@ -8,13 +8,21 @@
         - the `templates` folder (inside the `website` folder) contains the frontend code
         - the `static` folder (inside the `website` folder) contains the static files (images, css, js, etc.)
 - March 10: MVP done
-    - Features:
+    - Additional Features:
         - Get, Post, and delete/recover/found lost items: Enable users to post a description of a lost item they are searching for, which is viewable by other users, 
         and remove it once found. The same feature applies to people who have found items.
         - UML diagram for database - see DatabaseUML.pdf
         - Database design for storing lost and found objects and information about users
         - Basic UI design of being able to scroll through main page and see items and descriptions
         - Note: Update lost items was not completed, however, we will complete it over the next iteration - We let Matthew know about this.
+- March 26: Alpha done
+    - Additional Features:
+        - Basic search functionality based on keywords
+        - Item category search based on tags
+        - Keyword suggestions
+        - Date range search based on dates of when items were lost or found
+        - UI improvements to make website more user friendly
+        - Note: The update lost items feature proposed for the MVP was completed in this iteration
 
 ## 🤔 How to run?
 
