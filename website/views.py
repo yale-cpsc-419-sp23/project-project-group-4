@@ -4,7 +4,7 @@ from .models import LostObjects, FoundObjects
 from . import db
 from datetime import datetime
 import json
-# we want to import the file logger.py
+# We want to import the file logger.py
 from logger import logger
 
 views = Blueprint('views', __name__)
