@@ -1,3 +1,193 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
-    <h1 align="center">Home</h1>
-    {% endblock %}
+{% extends "base.html" %} {% block title %}Home{% endblock %} 
+
+
+{% block content %}
+    <!-- add a search bar to search for objects. The route is /search-objects -->
+    <h1>Search</h1>
+    <form method="POST" action="/search-objects" class="needs-validation" autocomplete="off">
+        <div class="form-group">
+            <label for="search">Description:</label>
+            <input type="text" name="query" class="form-control" list="object_list" required>
+            <datalist id="object_list">
+                {% for lost_object in lost_objects %}
+                    <option value="{{ lost_object.description }}">
+                {% endfor %}
+                {% for found_object in found_objects %}
+                    <option value="{{ found_object.description }}">
+                {% endfor %}
+            </datalist>
+            <div class="invalid-feedback">
+                Please provide a valid name.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-- add a search bar to search for objects by location. The route is /search-objects-by-location -->
+    <form method="POST" action="/search-object-location" class="needs-validation">
+        <div class="form-group">
+            <label for="search">Location:</label>
+            <select name="place" class="form-control" required>
+                <option value="">Select a location</option>
+                <optgroup label="Residential College">
+                    <option value="Benjamin Franklin">Benjamin Franklin</option>
+                    <option value="Pauli Murrary">Pauli Murrary</option>
+                    <option value="Timothy Dwight">Timothy Dwight</option>
+                    <option value="Jonathan Edwards">Jonathan Edwards</option>
+                    <option value="Ezra Stiles">Ezra Stiles</option>
+                    <option value="Morse">Morse</option>
+                    <option value="Berkeley">Berkeley</option>
+                    <option value="Saybrook">Saybrook</option>
+                    <option value="Pierson">Pierson</option>
+                    <option value="Davenport">Davenport</option>
+                    <option value="Trumbull">Trumbull</option>
+                    <option value="Silliman">Silliman</option>
+                    <option value="Grace Hopper">Grace Hopper</option>
+                    <option value="Branford">Branford</option>
+                </optgroup>
+                <optgroup label="Schwarzman Center">
+                    <option value="The Elm">The Elm</option>
+                    <option value="Commons">Commons</option>
+                    <option value="The Well">The Well</option>
+                </optgroup>
+                <optgroup label="South">
+                    <option value="MIA">Miami</option>
+                </optgroup>
+            </select>
+            <div class="invalid-feedback">
+                Please select a place.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-- add a search bar to search for objects by classifier. The route is /search-object-classifier -->
+    <form method="POST" action="/search-object-classifier" class="needs-validation">
+        <div class="form-group">
+            <label for="search">Classifier:</label>
+            <select name="classifier" class="form-control" required>
+                <option value="">Select a classifier</option>
+                <optgroup label="Electronic">
+                    <option value="Laptop">Laptop</option>
+                    <option value="Phone">Phone</option>
+                    <option value="Tablet">Tablet</option>
+                    <option value="Headphone">Headphone</option>
+                    <option value="Charger">Charger</option>
+                </optgroup>
+                <optgroup label="Clothing">
+                    <option value="Shirt">Shirt</option>
+                    <option value="Pants">Pants</option>
+                    <option value="Shoes">Shoes</option>
+                    <option value="Hat">Hat</option>
+                </optgroup>
+                <optgroup label="Miscellaneous">
+                    <option value="Wallet">Wallet</option>
+                    <option value="Keys">Keys</option>
+                </optgroup>
+            </select>
+            <div class="invalid-feedback">
+                Please select a classifier.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+
+    </form>
+
+    <!-- add a calendar to search for objects by date. The route is /search-object-date. The form should allow for an initial date and an end date. If nothing is entered, it should require the user to enter a date. -->
+    <form method="POST" action="/search-object-date" class="needs-validation">
+        <div class="form-group">
+            <label for="search">Date:</label>
+            <input type="date" name="lost_date" class="form-control" required>
+            <div class="invalid-feedback">
+                Please provide a valid date.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <br>
+    <form method="GET" action="/home" class="needs-validation">
+        <button type="submit" class="btn btn-primary">Reset</button>
+    </form>
+
+
+    <!-- show all the lost objects. This was passed in as `lost_objects`. -->
+    <br>
+    <h1>All Lost Objects</h1>
+    {% for lost_object in lost_objects %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User: {{ lost_object.loster }}</h5>
+                <p class="card-text">Description: {{ lost_object.description }}</p>
+                <p class="card-text">Date: {{ lost_object.lost_date }}</p>
+                <!-- show the object's location on the left and the object's classifier on the right -->
+                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
+            </div>
+
+        </div>
+    {% endfor %}
+
+    <!-- show all the found objects. This was passed in as `found_objects`. -->
+    <br>
+    <h1>All Found Objects</h1>
+    {% for found_object in found_objects %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User: {{ found_object.founder }}</h5>
+                <p class="card-text">Description: {{ found_object.description }}</p>
+                <p class="card-text">Date: {{ found_object.found_date }}</p>
+                <!-- show the object's location on the left and the object's classifier on the right -->
+                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
+            </div>
+
+        </div>
+    {% endfor %}
+
+    <!-- Display your lost objects. This was passed in as `user_lost_objects`. There should also be a little x that deletes the object. remember the route is /delete-lost-object/<id> -->
+    <br>
+    <h1>Your Lost Objects</h1>
+    {% for user_object in user_lost_objects %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User: {{ user_object.loster }}</h5>
+                <p class="card-text">Description: {{ user_object.description }}</p>
+                <p class="card-text">Date: {{ user_object.lost_date }}</p>
+                <!-- show the object's location on the left and the object's classifier on the right -->
+                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
+                
+                <h5>
+                    <a href="/delete-lost-object/{{ user_object.id }}" class="card-link">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                    <a href="/update_lost_object/{{ user_object.id }}" class="card-link">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                </h5>
+            </div>
+        </div>
+    {% endfor %}
+
+    <!-- Display your found objects. This was passed in as `user_found_objects`. There should also be a little x that deletes the object. remember the route is /delete-found-object/<id> -->
+    <br>
+    <h1>Your Found Objects</h1>
+    {% for user_object in user_found_objects %}
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User: {{ user_object.founder }}</h5>
+                <p class="card-text">Description: {{ user_object.description }}</p>
+                <p class="card-text">Date: {{ user_object.found_date }}</p>
+                <!-- show the object's location on the left and the object's classifier on the right -->
+                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
+                
+                <h5>
+                    <a href="/delete-found-object/{{ user_object.id }}" class="card-link">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                    <a href="/update_found_object/{{ user_object.id }}" class="card-link">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                </h5>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
