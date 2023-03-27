@@ -4,6 +4,8 @@
 {% block content %}
     <!-- Display your lost objects. This was passed in as `user_lost_objects`. There should also be a little x that deletes the object. remember the route is /delete-lost-object/<id> -->
     <br>
+    <h1>{{current_user.email}} has a total of {{num_lost}} lost objects and {{num_found}} found objects</h1>
+    <br>
     <h1>Your Lost Objects</h1>
     {% for user_object in user_lost_objects %}
         <div class="card">
@@ -20,6 +22,9 @@
                     </a>
                     <a href="/update_lost_object/{{ user_object.id }}" class="card-link">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                    <a href="/message" class="card-link">
+                        <i class="fa fa-telegram" aria-hidden="true"></i>
                     </a>
                 </h5>
             </div>
@@ -45,6 +50,7 @@
                     <a href="/update_found_object/{{ user_object.id }}" class="card-link">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     </a>
+                    
                 </h5>
             </div>
         </div>

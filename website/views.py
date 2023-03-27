@@ -229,4 +229,9 @@ def user():
     user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(current_user.email)).all()
     #users = People.query.all()
     
-    return render_template("user.html", user=current_user, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects)
+    return render_template("user.html", user=current_user, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
+                           num_lost=len(user_lost_objects), num_found=len(user_found_objects))
+
+@views.route('/message', methods=['GET, POST'])
+def message():
+    raise NotImplementedError
