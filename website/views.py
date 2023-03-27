@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
-from .models import LostObjects, FoundObjects
+from .models import LostObjects, FoundObjects, People
 from . import db
 from datetime import datetime
 import json
@@ -218,3 +218,15 @@ def search_lost_object_date():
     else:
         # do nothing
         return redirect(url_for('views.home'))
+
+@views.route('/user_info', methods=['GET'])
+def user():
+    # log the getting of the index page
+    logger.debug('Getting the user data page')
+    # get the data for this specific user
+    user_data = People.query.filter(People.username.contains(current_user.email)).all()
+    user_lost_objects = LostObjects.query.filter(LostObjects.loster.contains(current_user.email)).all()
+    user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(current_user.email)).all()
+    #users = People.query.all()
+    
+    return render_template("user.html", user=current_user, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects)
