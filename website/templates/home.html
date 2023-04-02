@@ -109,85 +109,68 @@
         <button type="submit" class="btn btn-primary">Reset</button>
     </form>
 
-
     <!-- show all the lost objects. This was passed in as `lost_objects`. -->
     <br>
     <h1>All Lost Objects</h1>
     {% for lost_object in lost_objects %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User: {{ lost_object.loster }}</h5>
-                <p class="card-text">Description: {{ lost_object.description }}</p>
-                <p class="card-text">Date: {{ lost_object.lost_date }}</p>
-                <!-- show the object's location on the left and the object's classifier on the right -->
-                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
+        {% if lost_object.loster == current_user.email %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User: {{ lost_object.loster }}</h5>
+                    <p class="card-text">Description: {{ lost_object.description }}</p>
+                    <p class="card-text">Date: {{ lost_object.lost_date }}</p>
+                    <!-- show the object's location on the left and the object's classifier on the right -->
+                    <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
+                </div>
             </div>
-
-        </div>
+        {%  else %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User: {{ lost_object.loster }}</h5>
+                    <p class="card-text">Description: {{ lost_object.description }}</p>
+                    <p class="card-text">Date: {{ lost_object.lost_date }}</p>
+                    <!-- show the object's location on the left and the object's classifier on the right -->
+                    <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
+                    <h5>
+                        <a href="/message" class="card-link">
+                            <i class="fa fa-telegram" aria-hidden="true"></i>
+                        </a>
+                    </h5>
+                </div>
+            </div>
+        {%  endif %}
     {% endfor %}
 
     <!-- show all the found objects. This was passed in as `found_objects`. -->
     <br>
     <h1>All Found Objects</h1>
     {% for found_object in found_objects %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User: {{ found_object.founder }}</h5>
-                <p class="card-text">Description: {{ found_object.description }}</p>
-                <p class="card-text">Date: {{ found_object.found_date }}</p>
-                <!-- show the object's location on the left and the object's classifier on the right -->
-                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
+        {% if found_object.founder == current_user.email %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User: {{ found_object.founder }}</h5>
+                    <p class="card-text">Description: {{ found_object.description }}</p>
+                    <p class="card-text">Date: {{ found_object.found_date }}</p>
+                    <!-- show the object's location on the left and the object's classifier on the right -->
+                    <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
+                </div>
             </div>
-
-        </div>
-    {% endfor %}
-
-    <!-- Display your lost objects. This was passed in as `user_lost_objects`. There should also be a little x that deletes the object. remember the route is /delete-lost-object/<id> -->
-    <br>
-    <h1>Your Lost Objects</h1>
-    {% for user_object in user_lost_objects %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User: {{ user_object.loster }}</h5>
-                <p class="card-text">Description: {{ user_object.description }}</p>
-                <p class="card-text">Date: {{ user_object.lost_date }}</p>
-                <!-- show the object's location on the left and the object's classifier on the right -->
-                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
-                
-                <h5>
-                    <a href="/delete-lost-object/{{ user_object.id }}" class="card-link">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </a>
-                    <a href="/update_lost_object/{{ user_object.id }}" class="card-link">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    </a>
-                </h5>
+        {%  else %}
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User: {{ found_object.founder }}</h5>
+                    <p class="card-text">Description: {{ found_object.description }}</p>
+                    <p class="card-text">Date: {{ found_object.found_date }}</p>
+                    <!-- show the object's location on the left and the object's classifier on the right -->
+                    <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
+                    <h5>
+                        <a href="/message" class="card-link">
+                            <i class="fa fa-telegram" aria-hidden="true"></i>
+                        </a>
+                    </h5>
+                </div>
             </div>
-        </div>
-    {% endfor %}
-
-    <!-- Display your found objects. This was passed in as `user_found_objects`. There should also be a little x that deletes the object. remember the route is /delete-found-object/<id> -->
-    <br>
-    <h1>Your Found Objects</h1>
-    {% for user_object in user_found_objects %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User: {{ user_object.founder }}</h5>
-                <p class="card-text">Description: {{ user_object.description }}</p>
-                <p class="card-text">Date: {{ user_object.found_date }}</p>
-                <!-- show the object's location on the left and the object's classifier on the right -->
-                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
-                
-                <h5>
-                    <a href="/delete-found-object/{{ user_object.id }}" class="card-link">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </a>
-                    <a href="/update_found_object/{{ user_object.id }}" class="card-link">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    </a>
-                </h5>
-            </div>
-        </div>
+        {% endif %}
     {% endfor %}
 
 {% endblock %}
