@@ -81,10 +81,10 @@ def update_lost_object(id):
         try:
             db.session.commit()
             flash("Updated Successfully")
-            return redirect(url_for('home'))
+            return redirect(url_for('user'))
         except:
             flash("Error", category='error')
-            return redirect(url_for('home'))
+            return redirect(url_for('user'))
     else:
         date = lost_object.lost_date.strftime('%Y-%m-%d')
         return render_template("update_loss.html", user=cas.username, lost_object=lost_object, date=date)
@@ -100,7 +100,7 @@ def delete_lost_object(id):
     db.session.commit()
     # kleep the user on the same page
     flash('Object Deleted', category='error')
-    return redirect(url_for('home'))
+    return redirect(url_for('user'))
 
 ################################################################################################################################################
 # Post found item
