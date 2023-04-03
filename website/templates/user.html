@@ -4,9 +4,9 @@
 {% block content %}
     <!-- Display your lost objects. This was passed in as `user_lost_objects`. There should also be a little x that deletes the object. remember the route is /delete-lost-object/<id> -->
     <br>
-    <h1>Displaying {{num_lost}} lost objects and {{num_found}} found objects</h1>
+    <h1 style="color: white;">Displaying {{num_lost}} lost objects and {{num_found}} found objects</h1>
     <br>
-    <h1>Your Lost Objects</h1>
+    <h1 style="color: white;">Your Lost Objects</h1>
     {% for user_object in user_lost_objects %}
         <div class="card">
             <div class="card-body">
@@ -30,7 +30,7 @@
 
     <!-- Display your found objects. This was passed in as `user_found_objects`. There should also be a little x that deletes the object. remember the route is /delete-found-object/<id> -->
     <br>
-    <h1>Your Found Objects</h1>
+    <h1 style="color: white;">Your Found Objects</h1>
     {% for user_object in user_found_objects %}
         <div class="card">
             <div class="card-body">

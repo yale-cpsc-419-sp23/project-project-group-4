@@ -3,10 +3,10 @@
 
 {% block content %}
     <!-- add a search bar to search for objects. The route is /search-objects -->
-    <h1>Search</h1>
+    <h1 style="color: white;">Search</h1>
     <form method="POST" action="/search-objects" class="needs-validation" autocomplete="off">
         <div class="form-group">
-            <label for="search">Description:</label>
+            <label for="search" style="color: white;">Description:</label>
             <input type="text" name="query" class="form-control" list="object_list">
             <datalist id="object_list">
                 {% for lost_object in lost_objects %}
@@ -16,7 +16,7 @@
                     <option value="{{ found_object.description }}">
                 {% endfor %}
             </datalist>
-            <label for="search">Location:</label>
+            <label for="search" style="color: white;">Location:</label>
             <select name="place" class="form-control">
                 <option value="">Select a location</option>
                 <optgroup label="Residential College">
@@ -44,7 +44,7 @@
                     <option value="MIA">Miami</option>
                 </optgroup>
             </select>
-            <label for="search">Classifier:</label>
+            <label for="search" style="color: white;">Classifier:</label>
             <select name="classifier" class="form-control">
                 <option value="">Select a classifier</option>
                 <optgroup label="Electronic">
@@ -65,7 +65,7 @@
                     <option value="Keys">Keys</option>
                 </optgroup>
             </select>
-            <label for="search">Date:</label>
+            <label for="search" style="color: white;">Date:</label>
             <input type="date" name="lost_date" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
@@ -78,7 +78,7 @@
 
     <!-- show all the lost objects. This was passed in as `lost_objects`. -->
     <br>
-    <h1>All Lost Objects</h1>
+    <h1 style="color: white;">All Lost Objects</h1>
     {% for lost_object in lost_objects %}
         {% if lost_object.loster == user %}
             <div class="card">
@@ -110,7 +110,7 @@
 
     <!-- show all the found objects. This was passed in as `found_objects`. -->
     <br>
-    <h1>All Found Objects</h1>
+    <h1 style="color: white;">All Found Objects</h1>
     {% for found_object in found_objects %}
         {% if found_object.founder == user %}
             <div class="card">

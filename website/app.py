@@ -47,24 +47,26 @@ def home():
     
     return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects)
 
+@app.route('/post', methods=['GET'])
+@login_required
+def post():
+    return render_template("post.html", user=cas.username)
+
 # Post lost item
-@app.route('/post_loss', methods=['GET', 'POST'])
+@app.route('/post_loss', methods=['POST'])
 @login_required
 def post_loss():
-    if request.method == 'POST':
-        loster = cas.username
-        description = request.form.get('description')
-        place = request.form.get('place')
-        classifier = request.form.get('classifier')
-        lost_date = request.form.get('lost_date')
+    loster = cas.username
+    description = request.form.get('description')
+    place = request.form.get('place')
+    classifier = request.form.get('classifier')
+    lost_date = request.form.get('lost_date')
 
-        new_lost_object = LostObjects(loster=loster, description=description, place=place, classifier=classifier, lost_date=datetime.strptime(lost_date, '%Y-%m-%d'))
-        db.session.add(new_lost_object)
-        db.session.commit()
-        flash('Object added!', category='success')
-        return redirect(url_for('home'))
-
-    return render_template("post_loss.html", user=cas.username)
+    new_lost_object = LostObjects(loster=loster, description=description, place=place, classifier=classifier, lost_date=datetime.strptime(lost_date, '%Y-%m-%d'))
+    db.session.add(new_lost_object)
+    db.session.commit()
+    flash('Object added!', category='success')
+    return redirect(url_for('home'))
 
 # Update database record
 @app.route('/update_lost_object/<id>', methods=['GET', 'POST'])
@@ -102,23 +104,20 @@ def delete_lost_object(id):
 
 ################################################################################################################################################
 # Post found item
-@app.route('/post_found', methods=['GET', 'POST'])
+@app.route('/post_found', methods=['POST'])
 @login_required
 def post_found():
-    if request.method == 'POST':
-        founder = cas.username
-        description = request.form.get('description')
-        place = request.form.get('place')
-        classifier = request.form.get('classifier')
-        found_date = request.form.get('found_date')
+    founder = cas.username
+    description = request.form.get('description')
+    place = request.form.get('place')
+    classifier = request.form.get('classifier')
+    found_date = request.form.get('found_date')
 
-        new_found_object = FoundObjects(founder=founder, description=description, place=place, classifier=classifier, found_date=datetime.strptime(found_date, '%Y-%m-%d'))
-        db.session.add(new_found_object)
-        db.session.commit()
-        flash('Object added!', category='success')
-        return redirect(url_for('home'))
-
-    return render_template("post_found.html", user=cas.username)
+    new_found_object = FoundObjects(founder=founder, description=description, place=place, classifier=classifier, found_date=datetime.strptime(found_date, '%Y-%m-%d'))
+    db.session.add(new_found_object)
+    db.session.commit()
+    flash('Object added!', category='success')
+    return redirect(url_for('home'))
 
 # Update database record
 @app.route('/update_found_object/<id>', methods=['GET', 'POST'])
