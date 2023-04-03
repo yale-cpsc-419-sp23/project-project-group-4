@@ -7,7 +7,7 @@
     <form method="POST" action="/search-objects" class="needs-validation" autocomplete="off">
         <div class="form-group">
             <label for="search">Description:</label>
-            <input type="text" name="query" class="form-control" list="object_list" required>
+            <input type="text" name="query" class="form-control" list="object_list">
             <datalist id="object_list">
                 {% for lost_object in lost_objects %}
                     <option value="{{ lost_object.description }}">
@@ -16,18 +16,8 @@
                     <option value="{{ found_object.description }}">
                 {% endfor %}
             </datalist>
-            <div class="invalid-feedback">
-                Please provide a valid name.
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-
-    <!-- add a search bar to search for objects by location. The route is /search-objects-by-location -->
-    <form method="POST" action="/search-object-location" class="needs-validation">
-        <div class="form-group">
             <label for="search">Location:</label>
-            <select name="place" class="form-control" required>
+            <select name="place" class="form-control">
                 <option value="">Select a location</option>
                 <optgroup label="Residential College">
                     <option value="Benjamin Franklin">Benjamin Franklin</option>
@@ -54,18 +44,8 @@
                     <option value="MIA">Miami</option>
                 </optgroup>
             </select>
-            <div class="invalid-feedback">
-                Please select a place.
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-    </form>
-
-    <!-- add a search bar to search for objects by classifier. The route is /search-object-classifier -->
-    <form method="POST" action="/search-object-classifier" class="needs-validation">
-        <div class="form-group">
             <label for="search">Classifier:</label>
-            <select name="classifier" class="form-control" required>
+            <select name="classifier" class="form-control">
                 <option value="">Select a classifier</option>
                 <optgroup label="Electronic">
                     <option value="Laptop">Laptop</option>
@@ -85,25 +65,12 @@
                     <option value="Keys">Keys</option>
                 </optgroup>
             </select>
-            <div class="invalid-feedback">
-                Please select a classifier.
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Search</button>
-
-    </form>
-
-    <!-- add a calendar to search for objects by date. The route is /search-object-date. The form should allow for an initial date and an end date. If nothing is entered, it should require the user to enter a date. -->
-    <form method="POST" action="/search-object-date" class="needs-validation">
-        <div class="form-group">
             <label for="search">Date:</label>
-            <input type="date" name="lost_date" class="form-control" required>
-            <div class="invalid-feedback">
-                Please provide a valid date.
-            </div>
+            <input type="date" name="lost_date" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
+
     <br>
     <form method="GET" action="/home" class="needs-validation">
         <button type="submit" class="btn btn-primary">Reset</button>
@@ -113,7 +80,7 @@
     <br>
     <h1>All Lost Objects</h1>
     {% for lost_object in lost_objects %}
-        {% if lost_object.loster == current_user.email %}
+        {% if lost_object.loster == user %}
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">User: {{ lost_object.loster }}</h5>
@@ -145,7 +112,7 @@
     <br>
     <h1>All Found Objects</h1>
     {% for found_object in found_objects %}
-        {% if found_object.founder == current_user.email %}
+        {% if found_object.founder == user %}
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">User: {{ found_object.founder }}</h5>

@@ -1,7 +1,5 @@
-from website import create_app
+from website.app import app
 import argparse
-
-app = create_app()
 
 def parse():
     """
@@ -14,4 +12,4 @@ def parse():
 
 if __name__ == '__main__':
     args = parse()
-    app.run(host='127.0.0.1', port = args.port, debug=True)
+    app.run(host="0.0.0.0", port=args.port, debug=True, threaded=True, ssl_context=('cert.pem', 'key.pem'))
