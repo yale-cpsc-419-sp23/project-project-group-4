@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
+      rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
@@ -18,27 +20,45 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <button
-        class="navbar-toggler" 
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbar"
-      >
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+        aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbar">
-        <div class="navbar-nav">
+          </button>
+  
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="navbar-nav w-100">
           {% if user.is_authenticated %}
-          <a class="nav-item nav-link" id="home" href="/home">Home</a>
-          <a class="nav-item nav-link" id="post_loss" href="/post_loss">Post Lost</a>
-          <a class="nav-item nav-link" id="post_found" href="/post_found">Post Found</a>
-          <a class="nav-item nav-link" id="user_info" href="/user_info">User Info</a>
-          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-          {% else %}
-          <a class="nav-item nav-link" id="login" href="/login">Login</a>
-          <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
-          {% endif %}
+            <li class="nav-item">
+              <a class="nav-item nav-link" id="home" href="/home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-item nav-link" id="post_loss" href="/post_loss">Post Lost</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-item nav-link" id="post_found" href="/post_found">Post Found</a>
+            </li>
+            <div class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-item nav-link" id="user_info" href="/user_info"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+              </svg></a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-item nav-link" id="login" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+            </li>
+            {% endif %}
+          </div>
+          </ul>
         </div>
       </div>
     </nav>

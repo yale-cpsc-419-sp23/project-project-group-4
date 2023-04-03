@@ -1,26 +1,235 @@
+/* *************   base.html ****************/
+
+body {
+  font-family: Arial, sans-serif;
+  /* background-color: #f5f5f5; */
+  background-image: url('/static/yalecasbg.jpeg');
+    /* background-size: cover; */
+    /* background-position: center center;
+    background-repeat: no-repeat; */
+}
+
+/* .cas-bg {
+    background-image: url('/static/yalecasbg.jpeg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+} */
+
 .container {
-    display: flex;
-    flex-direction: row;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.navbar {
+  background-color: #00356B;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+}
+
+.navbar .nav-item .nav-link {
+  color: #ffffff;
+  margin: auto 10px;
+}
+
+.navbar .nav-item .nav-link:hover {
+  color: #cccccc;
+}
+
+
+
+
+/**************   index.html  ***************/
+.index-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 90vh;
+  max-width: 1000px;
+  margin: 0 auto;
+  /* padding: 20px; */
+}
+.index-container p {
+  font-size: 1em;
+  margin-right: 20px;
+}
+.index-container img {
+  max-width: 350px;
+  height: auto;
+}
+
+.index-container .column {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;  
+  max-width: 500px;
+}
+
+/******************************   forms   **************************/
+
+.form-container {
+  max-width: 600px;
+  height: 600px;
+  /* margin: 50px auto; */
+  margin: 0px auto;
+  padding: 30px 0px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.form-title {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+#chk{
+  display: none;
+}
+
+.found-form{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.form-label{
+  color: #00356B;
+  font-size: 2.3em;
+  justify-content: center;
+  display: flex;
+  margin: 40px;
+  padding-top: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .5s ease-in-out;
+}
+
+.input-label{
+  width: 60%;
+  text-align: center;
+}
+.form-item{
+    color: black;
+    width: 60%;
+    height: 30px;
+    background: #b2d6fe;
     justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  .container p {
-    font-size: 1em;
-    margin-right: 20px;
-  }
-  .container img {
-    max-width: 300px;
-    height: auto;
-  }
-
-  .container .column {
     display: flex;
-    flex-direction: column;
+    margin: 20px auto;
+    /* padding: 10px; */
+    border:none;
+    outline: none;
+    border-radius: 5px;
+}
 
-    padding: 20px;
-  }
+textarea {
+  height: 60px !important;
+}
+.form-button{
+  width: 40%;
+  height: 40px;
+  margin: 10px auto;
+  justify-content: center;
+  display: block;
+  color: #fff;
+  background: #00356B;
+  font-size: 1em;
+  font-weight: bold;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  transition: .2s ease-in;
+  cursor: pointer;
+}
+
+.form-button:hover{
+  background: #0152a3;
+  transform: scale(1.1);
+
+}
+
+.invalid-feedback {
+  color: red;
+}
+
+.lost-form{
+  height: 500px;
+  background: #00356B;
+  border-radius: 60% / 10%;
+  transform: translateY(-150px);
+  transition: .8s ease-in-out;
+}
+
+.lost-form label{
+  color: #ffffff;
+}
+.lost-form .form-label{
+  transform: scale(.6);
+}
+
+#chk:checked ~ .lost-form{
+  transform: translateY(-500px);
+}
+
+#chk:checked ~ .lost-form .form-label{
+  transform: scale(1);
+}
+
+#chk:checked ~ .found-form .form-label{
+  transform: scale(.6);
+}
+
+.btn-light {
+  background-color: white;
+  color: #00356B;
+}
+
+.bg-yale {
+  background-color: #00356B;
+}
+/****************************** forms   **************************/
+
+
+
+
+/* .card {
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  font-weight: bold;
+}
+
+.card-link {
+  color: #007bff;
+}
+
+.card-link:hover {
+  color: #0056b3;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+
+
+form {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+} */
+
+

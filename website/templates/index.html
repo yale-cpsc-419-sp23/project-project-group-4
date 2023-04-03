@@ -19,7 +19,7 @@
     <title>{% block title %}Home{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark">
       <button
         class="navbar-toggler"
         type="button"
@@ -40,11 +40,11 @@
       </div>
     </nav>
 
-    <div class="container">
+    <div class="index-container">
         <div class="column">
-            <h1>Welcome to our Lost and Found app!</h1>
-            <p>Have you lost an item?</p>
-            <a href="/login" class="btn btn-primary"style="max-width:200px;">Login through CAS</a>
+            <h2>Welcome to Yale's first Lost and Found app!</h2>
+            <p>A community-driven platform to help you find your lost items and report found items to reunite them with their owners. Together, we can make a difference.</p>
+            <a href="/login" class="btn btn-primary"style="max-width:200px; background: #00356B;">Login through CAS</a>
         </div>
         <img src="{{url_for('static', filename='lost-found.jpeg')}}" alt="Lost Items">
       </div>

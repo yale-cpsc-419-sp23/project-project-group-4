@@ -1,0 +1,91 @@
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+      <!-- aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"> -->
+        </button>
+        <span class="navbar-toggler-icon"></span>
+
+      <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav w-100">
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-item nav-link" id="home" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link" id="post_loss" href="/post_loss">Post Lost</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link" id="post_found" href="/post_found">Post Found</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link" id="user_info" href="/user_info">User Info</a>
+          </li>
+          <li class="nav-item ml-auto">
+            <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item ml-auto">
+            <a class="nav-item nav-link" id="login" href="/login">Login</a>
+          </li>
+          <li class="nav-item ml-auto">
+            <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- original -->
+
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <button
+      class="navbar-toggler" 
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbar"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar">
+      <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="nav-item mr-auto">
+          <a class="nav-item nav-link" id="home" href="/home">Home</a>
+        </li>
+        <li class="nav-item mr-auto">
+          <a class="nav-item nav-link" id="post_loss" href="/post_loss">Post Lost</a>
+        </li>
+        <li class="nav-item mr-auto">
+          <a class="nav-item nav-link" id="post_found" href="/post_found">Post Found</a>
+        </li>
+        <li class="nav-item mr-auto">
+          <a class="nav-item nav-link" id="user_info" href="/user_info">User Info</a>
+        </li>
+        <li class="nav-item ml-auto">
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item ml-auto">
+          <a class="nav-item nav-link" id="login" href="/login">Login</a>
+        </li>
+        <li class="nav-item ml-auto">
+          <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>

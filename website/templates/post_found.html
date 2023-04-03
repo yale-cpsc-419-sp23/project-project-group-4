@@ -4,10 +4,91 @@
 {% block content %}
 
     <!-- Add a title saying "Post a Found Item" -->
-    <h1 align="center">Post a Found Item</h1>
+    <!-- <h1 align="center">Post a Found Item</h1> -->
+
+    <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+
+        <div class="found-form">
+            <form>
+                <label for="chk" aria-hidden="true">Found</label>
+
+                <!----------------------- classifier ------------------------------>
+                <select name="classifier" class="form-control" required>
+                    <option value="">Select a classifier</option>
+                    <optgroup label="Electronic">
+                        <option value="Laptop">Laptop</option>
+                        <option value="Phone">Phone</option>
+                        <option value="Tablet">Tablet</option>
+                        <option value="Headphone">Headphone</option>
+                        <option value="Charger">Charger</option>
+                    </optgroup>
+                    <optgroup label="Clothing">
+                        <option value="Shirt">Shirt</option>
+                        <option value="Pants">Pants</option>
+                        <option value="Shoes">Shoes</option>
+                        <option value="Hat">Hat</option>
+                    </optgroup>
+                    <optgroup label="Miscellaneous">
+                        <option value="Wallet">Wallet</option>
+                        <option value="Keys">Keys</option>
+                    </optgroup>
+                </select>
+                <!----------------------------- date ----------------------------- -->
+
+                <input type="date" name="found_date" class="form-control" required />
+
+                <!----------------------------- place ----------------------------- -->
+                <select name="place" class="form-control" required>
+                    <option value="">Select a location</option>
+                    <optgroup label="Residential College">
+                        <option value="Benjamin Franklin">Benjamin Franklin</option>
+                        <option value="Pauli Murrary">Pauli Murrary</option>
+                        <option value="Timothy Dwight">Timothy Dwight</option>
+                        <option value="Jonathan Edwards">Jonathan Edwards</option>
+                        <option value="Ezra Stiles">Ezra Stiles</option>
+                        <option value="Morse">Morse</option>
+                        <option value="Berkeley">Berkeley</option>
+                        <option value="Saybrook">Saybrook</option>
+                        <option value="Pierson">Pierson</option>
+                        <option value="Davenport">Davenport</option>
+                        <option value="Trumbull">Trumbull</option>
+                        <option value="Silliman">Silliman</option>
+                        <option value="Grace Hopper">Grace Hopper</option>
+                        <option value="Branford">Branford</option>
+                    </optgroup>
+                    <optgroup label="Schwarzman Center">
+                        <option value="The Elm">The Elm</option>
+                        <option value="Commons">Commons</option>
+                        <option value="The Well">The Well</option>
+                    </optgroup>
+                    <optgroup label="South">
+                        <option value="MIA">Miami</option>
+                    </optgroup>
+                </select>
+
+                <!------------------------------ description ------------------------------->
+                <textarea name="description" class="form-control" required></textarea>
+
+                <!------------------------------ submit ------------------------------->
+                <button>Submit</button>
+            </form>
+        </div>
+
+        <div class="lost-form">
+            <form action="">
+                <label for="chk" aria-hidden="true">Lost</label>
+                <input type="email" name="email" placeholder="Email" required="">
+                <input type="text" name="name" placeholder="User name" required="">
+                <button>Submit</button>
+            </form>
+        </div>
+    </div>
 
 
-    <div class="container">
+
+    <div class="form-container">
+        <h2 class="form-title">Report a Found Item</h2>
         <form method="POST" action="/post_found" class="needs-validation">
             <div class="form-group">
                 <label for="classifier">Classifier:</label>
