@@ -57,8 +57,7 @@
     {% for message in messages %}
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Message From: {{ message.sender }}</h5>
-                <p class="card-text">Message: {{ message.content }}</p>
+                <p class="card-title"><strong>{{ message.sender }}</strong>: {{ message.content }}</p>
                 <!-- show the object's location on the left and the object's classifier on the right -->
                 <h5>
                     <a href="/delete-message/{{ message.id }}" class="card-link">
