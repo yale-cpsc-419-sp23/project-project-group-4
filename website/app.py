@@ -18,6 +18,11 @@ app.config['SESSION_TYPE'] = 'cookie'
 app.config['SESSION_PERMANENT'] = True
 db.init_app(app)
 
+classifiers = {"Electronic": ["Laptop", "Phone", "Headphone", "Tablet", "Charger"], "Clothing": ["Shirt", "Pants", "Shoes", "Hat"], "Miscellaneous": ["Wallet", "Keys", "ID"]}
+places = {"Residential College": ["Benjamin Franklin", "Pauli Murray", "Timothy Dwight", "Jonathan Edwards", "Ezra Stiles", "Morse", "Berkeley", "Saybrook", "Pierson"\
+                                  , "Davenport", "Trumbull", "Silliman", "Grace Hopper", "Branford"], "Schwartzman Center": ["The Elm", "Commons", "The Well"], \
+                                    "South": ["Miami"]}
+
 with app.app_context():
     db.create_all()
 
@@ -50,7 +55,7 @@ def home():
 @app.route('/post', methods=['GET'])
 @login_required
 def post():
-    return render_template("post.html", user=cas.username)
+    return render_template("post.html", user=cas.username, classifiers=classifiers, places=places)
 
 @app.route('/message/<id>', methods=['GET', 'POST'])
 @login_required
