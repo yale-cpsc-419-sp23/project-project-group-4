@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from .models import LostObjects, FoundObjects, People
+from .models import LostObjects, FoundObjects, People, Message
 from . import db
 from datetime import datetime
 from flask_cas import CAS, login_required, login, logout
@@ -52,6 +52,19 @@ def home():
 def post():
     return render_template("post.html", user=cas.username)
 
+@app.route('/message/<id>', methods=['GET', 'POST'])
+@login_required
+def message(id):
+    if request.method == 'POST':
+        msg = request.form.get('message')
+        new_message = Message(sender=cas.username, receiver=id, content=msg)
+        db.session.add(new_message)
+        db.session.commit()
+        flash('Message sent', category='success')
+        return redirect(url_for('home'))
+    else: 
+        return render_template("message.html", user=id)
+    
 # Post lost item
 @app.route('/post_loss', methods=['POST'])
 @login_required
@@ -153,6 +166,15 @@ def delete_found_object(id):
     flash('Object Deleted', category='error')
     return redirect(url_for('user'))
 
+@app.route('/delete-message/<id>', methods=['GET'])
+@login_required
+def delete_message(id):
+    message = Message.query.filter_by(id=id).first()
+    db.session.delete(message)
+    db.session.commit()
+    flash('Message Deleted', category='success')
+    return redirect(url_for('user'))
+
 #################################################################################################################################################
 # Search objects
 # make a /search-objects route that would take a query string and search for the lost objects
@@ -238,12 +260,9 @@ def user():
     user_data = People.query.filter(People.username.contains(cas.username)).all()
     user_lost_objects = LostObjects.query.filter(LostObjects.loster.contains(cas.username)).all()
     user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(cas.username)).all()
+    user_messages = Message.query.filter(Message.receiver.contains(cas.username)).all()
     #users = People.query.all()
     
     return render_template("user.html", user=cas.username, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
-                           num_lost=len(user_lost_objects), num_found=len(user_found_objects))
+                           num_lost=len(user_lost_objects), num_found=len(user_found_objects), messages=user_messages)
 
-@app.route('/message', methods=['GET, POST'])
-@login_required
-def message():
-    raise NotImplementedError

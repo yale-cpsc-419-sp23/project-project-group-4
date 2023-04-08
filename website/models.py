@@ -14,6 +14,13 @@ class People(db.Model):
     num_found_items = db.Column(db.Integer, default=0)
     is_admin = db.Column(db.Boolean, default=False)
 
+class Message(db.Model): 
+    __tablename__ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    receiver = db.Column(db.String(100), db.ForeignKey('people.username'))
+    sender = db.Column(db.String(100), db.ForeignKey('people.username'))
+    content = db.Column(db.String(500), unique=True)
+
 class Places(db.Model):
     __tablename__ = 'places'
     id = db.Column(db.Integer, primary_key=True)
