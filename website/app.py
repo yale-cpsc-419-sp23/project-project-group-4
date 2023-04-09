@@ -290,10 +290,7 @@ def user():
     return render_template("user.html", user=cas.username, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
                            num_lost=len(user_lost_objects), num_found=len(user_found_objects), messages=user_messages)
 
-<<<<<<< HEAD
-@app.route('/message', methods=['GET, POST'])
-@login_required
-def message():
-    raise NotImplementedError
-=======
->>>>>>> 241fa733ad48ba8f88785854ea98b5a1dddc8f90
+# @app.route('/message', methods=['GET, POST'])
+# @login_required
+# def message():
+#     raise NotImplementedError
