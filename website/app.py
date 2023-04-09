@@ -108,6 +108,14 @@ def update_lost_object(id):
         lost_object.place = request.form.get('place')
         lost_object.classifier = request.form.get('classifier')
         lost_object.lost_date = datetime.strptime(request.form.get('lost_date'), '%Y-%m-%d')
+
+         # save the file
+        file = request.files['file']
+        filename = file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        image = filename
+        lost_object.image = image
+
         try:
             db.session.commit()
             flash("Updated Successfully")
@@ -117,7 +125,7 @@ def update_lost_object(id):
             return redirect(url_for('user'))
     else:
         date = lost_object.lost_date.strftime('%Y-%m-%d')
-        return render_template("update_loss.html", user=cas.username, lost_object=lost_object, date=date)
+        return render_template("update_loss.html", user=cas.username, lost_object=lost_object, date=date, places=places, classifiers=classifiers)
 
 # make a route to delete a lost object use a route that would be like /delete-lost-object/<id>
 @app.route('/delete-lost-object/<id>', methods=['GET'])
@@ -166,6 +174,14 @@ def update_found_object(id):
         found_object.place = request.form.get('place')
         found_object.classifier = request.form.get('classifier')
         found_object.found_date = datetime.strptime(request.form.get('found_date'), '%Y-%m-%d')
+
+         # save the file
+        file = request.files['file']
+        filename = file.filename
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        image = filename
+        found_object.image = image
+
         try:
             db.session.commit()
             flash("Updated Successfully")
@@ -175,7 +191,7 @@ def update_found_object(id):
             return redirect(url_for('user'))
     else:
         date = found_object.found_date.strftime('%Y-%m-%d')
-        return render_template("update_found.html", user=cas.username, found_object=found_object, date=date)
+        return render_template("update_found.html", user=cas.username, found_object=found_object, date=date, places=places, classifiers=classifiers)
 
 # make a route to delete a found object use a route that would be like /delete-found-object/<id>
 @app.route('/delete-found-object/<id>', methods=['GET'])
@@ -289,8 +305,3 @@ def user():
     
     return render_template("user.html", user=cas.username, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
                            num_lost=len(user_lost_objects), num_found=len(user_found_objects), messages=user_messages)
-
-# @app.route('/message', methods=['GET, POST'])
-# @login_required
-# def message():
-#     raise NotImplementedError

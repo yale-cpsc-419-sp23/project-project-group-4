@@ -15,6 +15,7 @@
                 <p class="card-text">Date: {{ user_object.lost_date }}</p>
                 <!-- show the object's location on the left and the object's classifier on the right -->
                 <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
+                <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}" style="width:200px;height:200px;border-radius:50%;">
                 
                 <h5>
                     <a href="/delete-lost-object/{{ user_object.id }}" class="card-link">
@@ -39,6 +40,7 @@
                 <p class="card-text">Date: {{ user_object.found_date }}</p>
                 <!-- show the object's location on the left and the object's classifier on the right -->
                 <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
+                <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}" style="width:200px;height:200px;border-radius:50%;">
                 
                 <h5>
                     <a href="/delete-found-object/{{ user_object.id }}" class="card-link">

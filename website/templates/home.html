@@ -100,6 +100,8 @@
                     <p class="card-text">Date: {{ lost_object.lost_date }}</p>
                     <!-- show the object's location on the left and the object's classifier on the right -->
                     <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
+                    <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
+                    <img src="../static/images/{{ lost_object.image }}" alt="{{ lost_object.description }}" style="width:200px;height:200px;border-radius:50%;">
                     <h5>
                         <a href="/message/{{ lost_object.loster }}" class="card-link">
                             <i class="fa fa-telegram" aria-hidden="true"></i>
@@ -123,7 +125,6 @@
                     <p class="card-text">Date: {{ found_object.found_date }}</p>
                     <!-- show the object's location on the left and the object's classifier on the right -->
                     <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
-
                     <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
                     <img src="../static/images/{{ found_object.image }}" alt="{{ found_object.description }}" style="width:200px;height:200px;border-radius:50%;">
                 </div>
@@ -136,6 +137,8 @@
                     <p class="card-text">Date: {{ found_object.found_date }}</p>
                     <!-- show the object's location on the left and the object's classifier on the right -->
                     <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
+                    <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
+                    <img src="../static/images/{{ found_object.image }}" alt="{{ found_object.description }}" style="width:200px;height:200px;border-radius:50%;">
                     <h5>
                         <a href="/message/{{ found_object.founder }}" class="card-link">
                             <i class="fa fa-telegram" aria-hidden="true"></i>

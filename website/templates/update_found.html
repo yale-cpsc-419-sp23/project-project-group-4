@@ -8,28 +8,18 @@
 
 
     <div class="container">
-        <form method="POST" action="/update_found_object/{{found_object.id}}" class="needs-validation">
+        <form method="POST" action="/update_found_object/{{found_object.id}}" class="needs-validation" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="classifier">Classifier:</label>
                 <select name="classifier" class="form-control" required>
                     <option value="{{ found_object.classifier }}" selected>{{ found_object.classifier }}</option>
-                    <optgroup label="Electronic">
-                        <option value="Laptop">Laptop</option>
-                        <option value="Phone">Phone</option>
-                        <option value="Tablet">Tablet</option>
-                        <option value="Headphone">Headphone</option>
-                        <option value="Charger">Charger</option>
-                    </optgroup>
-                    <optgroup label="Clothing">
-                        <option value="Shirt">Shirt</option>
-                        <option value="Pants">Pants</option>
-                        <option value="Shoes">Shoes</option>
-                        <option value="Hat">Hat</option>
-                    </optgroup>
-                    <optgroup label="Miscellaneous">
-                        <option value="Wallet">Wallet</option>
-                        <option value="Keys">Keys</option>
-                    </optgroup>
+                    {%  for key, value in classifiers.items() %}
+                        <optgroup label="{{ key }}">
+                            {% for class in value %}
+                                <option value="{{ class }}">{{ class }}</option>
+                            {%  endfor %}
+                        </optgroup>
+                    {%  endfor %}
                 </select>
                 <div class="invalid-feedback">
                     Please select a classifier.
@@ -48,30 +38,13 @@
                 <label for="place">Place:</label>
                 <select name="place" class="form-control" required>
                     <option value="{{ found_object.place }}" selected>{{ found_object.place }}</option>
-                    <optgroup label="Residential College">
-                        <option value="Benjamin Franklin">Benjamin Franklin</option>
-                        <option value="Pauli Murrary">Pauli Murrary</option>
-                        <option value="Timothy Dwight">Timothy Dwight</option>
-                        <option value="Jonathan Edwards">Jonathan Edwards</option>
-                        <option value="Ezra Stiles">Ezra Stiles</option>
-                        <option value="Morse">Morse</option>
-                        <option value="Berkeley">Berkeley</option>
-                        <option value="Saybrook">Saybrook</option>
-                        <option value="Pierson">Pierson</option>
-                        <option value="Davenport">Davenport</option>
-                        <option value="Trumbull">Trumbull</option>
-                        <option value="Silliman">Silliman</option>
-                        <option value="Grace Hopper">Grace Hopper</option>
-                        <option value="Branford">Branford</option>
-                    </optgroup>
-                    <optgroup label="Schwarzman Center">
-                        <option value="The Elm">The Elm</option>
-                        <option value="Commons">Commons</option>
-                        <option value="The Well">The Well</option>
-                    </optgroup>
-                    <optgroup label="South">
-                        <option value="MIA">Miami</option>
-                    </optgroup>
+                    {%  for key, value in places.items() %}
+                        <optgroup label="{{ key }}">
+                            {% for place in value %}
+                                <option value="{{ place }}">{{ place }}</option>
+                            {%  endfor %}
+                        </optgroup>
+                    {%  endfor %}
                 </select>
                 <div class="invalid-feedback">
                     Please select a place.
@@ -84,6 +57,11 @@
                 <div class="invalid-feedback">
                     Please provide a description of the found item.
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="file">Image:</label>
+                <input type="file"  class="form-control-file" name="file" accept="image/png, image/jpeg, image/jpg" required/>
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>
