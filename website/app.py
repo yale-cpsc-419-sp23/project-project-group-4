@@ -291,17 +291,25 @@ def search_objects():
             # do nothing
             return redirect(url_for('home'))
 
-@app.route('/user_info', methods=['GET'])
+@app.route('/user_objects', methods=['GET'])
 @login_required
-def user():
+def user_objects():
     # log the getting of the index page
-    logger.debug('Getting the user data page')
+    logger.debug('Getting the user objects page')
     # get the data for this specific user
     user_data = People.query.filter(People.username.contains(cas.username)).all()
     user_lost_objects = LostObjects.query.filter(LostObjects.loster.contains(cas.username)).all()
     user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(cas.username)).all()
-    user_messages = Message.query.filter(Message.receiver.contains(cas.username)).all()
-    #users = People.query.all()
     
-    return render_template("user.html", user=cas.username, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
-                           num_lost=len(user_lost_objects), num_found=len(user_found_objects), messages=user_messages)
+    return render_template("user_objects.html", user=cas.username, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
+                           num_lost=len(user_lost_objects), num_found=len(user_found_objects))
+
+@app.route('/user_messages', methods=['GET'])
+@login_required
+def user_messages():
+    # log the getting of the index page
+    logger.debug('Getting the user messages page')
+    # get the data for this specific user
+    user_messages = Message.query.filter(Message.receiver.contains(cas.username)).all()
+    
+    return render_template("user_messages.html", messages=user_messages)
