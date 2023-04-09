@@ -77,7 +77,7 @@ body {
 
 .form-container {
   max-width: 600px;
-  height: 600px;
+  height: 650px;
   margin: 0px auto;
   padding: 30px 0px;
   background-color: white;
@@ -166,7 +166,7 @@ textarea {
 }
 
 .lost-form{
-  height: 500px;
+  height: 600px;
   background: #00356B;
   border-radius: 60% / 10%;
   transform: translateY(-150px);
@@ -181,7 +181,7 @@ textarea {
 }
 
 #chk:checked ~ .lost-form{
-  transform: translateY(-500px);
+  transform: translateY(-550px);
 }
 
 #chk:checked ~ .lost-form .form-label{
@@ -189,7 +189,7 @@ textarea {
 }
 
 #chk:checked ~ .found-form .form-label{
-  transform: scale(.6);
+  transform: scale(.7);
 }
 
 .btn-light {
@@ -200,6 +200,12 @@ textarea {
 .bg-yale {
   background-color: #00356B;
 }
+
+.form-group .img-item {
+  display: flex;
+  justify-content: space-around;
+}
+
 
 
 /******************************   home   **************************/
@@ -362,6 +368,7 @@ textarea {
 
 .card-image {
   max-height: 200px;
+  /* max-width: fit-content; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -370,6 +377,7 @@ textarea {
 
 .card-image img {
   max-height: 200px;
+  max-width: 100%;
   /* width: 100%; */
   /* object-fit: cover; */
 }

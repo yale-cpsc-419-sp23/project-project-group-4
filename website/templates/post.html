@@ -54,6 +54,7 @@
                             Please select a place.
                         </div>
                     </div>
+                    
                     <div class="form-group">
                         <!-- <label class="input-label" for="description">Description:</label> -->
                         <textarea class="form-item" name="description" class="form-control" placeholder=" Description" required></textarea>
@@ -63,11 +64,13 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="form-item">
-                            <label for="file">Image</label>
-                            <input type="file"  class="form-control-file" name="file" required/>
+                        <div class="form-item img-item">
+                            <p style="margin: 0 10px;">Image:</p>
+                            <input type="file" class="form-control-file" name="file" required placeholder="Image" />
                         </div>
                     </div>
+
+                   
         
                     <button class="form-button" type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -133,9 +136,9 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="form-item">
-                            <label for="file">Image</label>
-                            <input type="file"  class="form-control-file" name="file" accept="image/png, image/jpeg, image/jpg" required/>
+                        <div class="form-item img-item">
+                            <p style="margin: 0 10px;">Image:</p>
+                            <input type="file"  accept="image/*" capture="camera" class="form-control-file" name="file" required placeholder="Image" />
                         </div>
                     </div>
 

@@ -1,65 +1,6 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} 
 
 
-{% block content %}
-    <!-- Display your lost objects. This was passed in as `user_lost_objects`. There should also be a little x that deletes the object. remember the route is /delete-lost-object/<id> -->
-    <br>
-    <h1 style="color: white;">Displaying {{num_lost}} lost objects and {{num_found}} found objects</h1>
-    <br>
-    <h1 style="color: white;">Your Lost Objects</h1>
-    {% for user_object in user_lost_objects %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User: {{ user_object.loster }}</h5>
-                <p class="card-text">Description: {{ user_object.description }}</p>
-                <p class="card-text">Date: {{ user_object.lost_date }}</p>
-                <!-- show the object's location on the left and the object's classifier on the right -->
-                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
-                <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}" style="width:200px;height:200px;border-radius:50%;">
-                
-                <h5>
-                    <a href="/delete-lost-object/{{ user_object.id }}" class="card-link">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </a>
-                    <a href="/update_lost_object/{{ user_object.id }}" class="card-link">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    </a>
-                </h5>
-            </div>
-        </div>
-    {% endfor %}
-
-    <!-- Display your found objects. This was passed in as `user_found_objects`. There should also be a little x that deletes the object. remember the route is /delete-found-object/<id> -->
-    <br>
-    <h1 style="color: white;">Your Found Objects</h1>
-    {% for user_object in user_found_objects %}
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">User: {{ user_object.founder }}</h5>
-                <p class="card-text">Description: {{ user_object.description }}</p>
-                <p class="card-text">Date: {{ user_object.found_date }}</p>
-                <!-- show the object's location on the left and the object's classifier on the right -->
-                <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
-                <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}" style="width:200px;height:200px;border-radius:50%;">
-                
-                <h5>
-                    <a href="/delete-found-object/{{ user_object.id }}" class="card-link">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
-                    </a>
-                    <a href="/update_found_object/{{ user_object.id }}" class="card-link">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    </a>
-                    
-                </h5>
-            </div>
-        </div>
-    {% endfor %}
-
-{% endblock %}
-
-{% extends "base.html" %} {% block title %}Home{% endblock %} 
-
-
 {% block userinfo %}
     <!-- Display your lost objects. This was passed in as `user_lost_objects`. There should also be a little x that deletes the object. remember the route is /delete-lost-object/<id> -->
     <br>
@@ -70,7 +11,7 @@
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                     <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                   </svg>
-                  <h4 style="margin-top: 20px; margin-bottom: 30px;">Username</h4>
+                  <h4 style="margin-top: 20px; margin-bottom: 30px;">{{username}}</h4>
             </div>
             <div class="user-lbl-container">
                 
@@ -96,7 +37,7 @@
                         </div>
                         
                         <div class="card-image">
-                            <img src="{{url_for('static', filename='noimage.jpeg')}}" alt="">
+                            <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}">
                         </div> 
                         <p class="card-text">Description: {{ user_object.description }}</p>
                         <p class="card-text">Date: {{ user_object.lost_date }}</p>
@@ -126,7 +67,7 @@
                             </div>
                             
                             <div class="card-image">
-                                <img src="{{url_for('static', filename='noimage.jpeg')}}" alt="">
+                                <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}">
                             </div> 
                             <p class="card-text">Description: {{ user_object.description }}</p>
                             <p class="card-text">Date: {{ user_object.found_date }}</p>
@@ -139,7 +80,25 @@
             </div>
 
             <div id="msg-body" class="hidden-user-body">
-                <h3 >Displaying (number of) messages</h3>
+                <h3 >Displaying {{num_messages}} messages</h3>
+                {% for message in messages %}
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title"><strong>{{ message.sender }}</strong>: {{ message.content }}</p>
+                        <!-- show the object's location on the left and the object's classifier on the right -->
+                        <h5>
+                            <a href="/delete-message/{{ message.id }}" class="card-link">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                            <a href="/message/{{ message.sender }}" class="card-link">
+                                <i class="fa fa-telegram" aria-hidden="true"></i>
+                            </a>
+                            
+                        </h5>
+                    </div>
+                </div>
+    <br>
+    {% endfor %}
             </div>
 
         </div>
