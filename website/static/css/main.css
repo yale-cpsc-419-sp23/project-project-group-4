@@ -254,6 +254,6 @@ label {
   display: block;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {background-color: #ddd; text-decoration: none; color: black}
 
 .dropdown:hover .dropdown-content {display: block;}
