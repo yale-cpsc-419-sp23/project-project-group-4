@@ -5,7 +5,8 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to bottom, #4792d0, #609fd3, #275070);
+    background-image: url('/static/yalecasbg.jpeg');
+    /* background: linear-gradient(to bottom, #4792d0, #609fd3, #275070); */
 }
 
 .main{

@@ -59,7 +59,7 @@ def home():
     return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects)
 
 @app.route('/post', methods=['GET'])
-@login_required
+# @login_required
 def post():
     return render_template("post.html", user=cas.username, classifiers=classifiers, places=places)
 
