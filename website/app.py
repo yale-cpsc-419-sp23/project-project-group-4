@@ -291,9 +291,9 @@ def search_objects():
             # do nothing
             return redirect(url_for('home'))
 
-@app.route('/user_objects', methods=['GET'])
+@app.route('/user', methods=['GET'])
 @login_required
-def user_objects():
+def user():
     # log the getting of the index page
     logger.debug('Getting the user objects page')
     # get the data for this specific user
@@ -302,6 +302,7 @@ def user_objects():
     user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(cas.username)).all()
     # get the data for this specific user
     user_messages = Message.query.filter(Message.receiver.contains(cas.username)).all()
+    sent_messages = Message.query.filter(Message.sender.contains(cas.username)).all()
     
     return render_template("user.html", username=cas.username, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
-                           num_lost=len(user_lost_objects), num_found=len(user_found_objects),num_messages=len(user_messages), messages=user_messages)
+                           num_lost=len(user_lost_objects), num_found=len(user_found_objects),num_messages=len(user_messages), user_messages=user_messages, sent_messages=sent_messages)
