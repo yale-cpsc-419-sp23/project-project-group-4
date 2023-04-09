@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block title %}Send Message{% endblock %} 
+{% block content %}
+  <head>
+    <title>Send message</title>
+  </head>
+
+  <form method="POST" action="/message/{{user}}" class="needs-validation">
+    <div class="form-group">
+        <h1 style="color: white;">Send message to {{ user }}</h1>
+        <textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+  </form>
+  
+
+  {% endblock %}

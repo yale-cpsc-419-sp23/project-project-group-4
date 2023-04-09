@@ -101,7 +101,7 @@
                     <!-- show the object's location on the left and the object's classifier on the right -->
                     <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
                     <h5>
-                        <a href="/message" class="card-link">
+                        <a href="/message/{{ lost_object.loster }}" class="card-link">
                             <i class="fa fa-telegram" aria-hidden="true"></i>
                         </a>
                     </h5>
@@ -137,7 +137,7 @@
                     <!-- show the object's location on the left and the object's classifier on the right -->
                     <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
                     <h5>
-                        <a href="/message" class="card-link">
+                        <a href="/message/{{ found_object.founder }}" class="card-link">
                             <i class="fa fa-telegram" aria-hidden="true"></i>
                         </a>
                     </h5>
