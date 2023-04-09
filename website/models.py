@@ -34,6 +34,7 @@ class LostObjects(db.Model):
     place = db.Column(db.String(100))
     # classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
     classifier = db.Column(db.String(100))
+    image = db.Column(db.String(1000))
 
 class FoundObjects(db.Model):
     __tablename__ = 'found_objects'
@@ -46,3 +47,4 @@ class FoundObjects(db.Model):
     place = db.Column(db.String(100))
     # classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
     classifier = db.Column(db.String(100))
+    image = db.Column(db.String(1000))

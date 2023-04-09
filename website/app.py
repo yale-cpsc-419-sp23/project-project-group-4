@@ -6,6 +6,7 @@ from datetime import datetime
 from flask_cas import CAS, login_required, login, logout
 # We want to import the file logger.py
 from logger import logger
+import os
 
 app = Flask(__name__, template_folder='./templates')
 cas = CAS(app)
@@ -16,6 +17,11 @@ app.secret_key = 'My beautiful and long secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{"database.db"}'
 app.config['SESSION_TYPE'] = 'cookie'
 app.config['SESSION_PERMANENT'] = True
+
+# Set the path for uploaded files
+UPLOAD_FOLDER = os.path.join(app.root_path) + '/static/images'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 db.init_app(app)
 
 with app.app_context():
@@ -62,7 +68,13 @@ def post_loss():
     classifier = request.form.get('classifier')
     lost_date = request.form.get('lost_date')
 
-    new_lost_object = LostObjects(loster=loster, description=description, place=place, classifier=classifier, lost_date=datetime.strptime(lost_date, '%Y-%m-%d'))
+    # save the file
+    file = request.files['file']
+    filename = file.filename
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    image = filename
+
+    new_lost_object = LostObjects(loster=loster, description=description, place=place, classifier=classifier, lost_date=datetime.strptime(lost_date, '%Y-%m-%d'), image=image)
     db.session.add(new_lost_object)
     db.session.commit()
     flash('Object added!', category='success')
@@ -113,7 +125,14 @@ def post_found():
     classifier = request.form.get('classifier')
     found_date = request.form.get('found_date')
 
-    new_found_object = FoundObjects(founder=founder, description=description, place=place, classifier=classifier, found_date=datetime.strptime(found_date, '%Y-%m-%d'))
+    # save the file
+    file = request.files['file']
+    filename = file.filename
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    image = filename
+
+    new_found_object = FoundObjects(founder=founder, description=description, place=place, classifier=classifier, found_date=datetime.strptime(found_date, '%Y-%m-%d'), image=image)
+
     db.session.add(new_found_object)
     db.session.commit()
     flash('Object added!', category='success')
