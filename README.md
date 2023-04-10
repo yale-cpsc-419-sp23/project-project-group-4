@@ -23,6 +23,14 @@
         - Date range search based on dates of when items were lost or found
         - UI improvements to make website more user friendly
         - Note: The update lost items feature proposed for the MVP was completed in this iteration ✅
+ - April 9: Beta done
+    - Additional Features:
+        - Bug fixes and stability improvements
+        - Messaging system to connect people who lost items with people who found items
+        - User profiles with basic data regarding what items they have lost and found, and how many
+        - UI improvements to make website more visually appealing
+        - Note: Integration of external messaging methods (email, phone) was not completing as we feel there is no need to have this given our current messaging system built into our app. It would not make any sense.
+
 
 ## 🤔 How to run?
 
