@@ -30,6 +30,7 @@
         - User profiles with basic data regarding what items they have lost and found, and how many
         - UI improvements to make website more visually appealing
         - Note: Integration of external messaging methods (email, phone) was not completing as we feel there is no need to have this given our current messaging system built into our app. It would not make any sense.
+        - Additional: We have added Yale CAS Login within our app
 
 
 ## 🤔 How to run?
