@@ -6,6 +6,10 @@
     <div class="container">
       <form method="POST" action="/message/{{user}}" class="needs-validation">
           <div class="form-group">
+            <h1>Subject</h1>
+            <textarea id="subject" name="subject" class="form-control" required></textarea>
+
+            <h1>Description</h1>
             <textarea id="message" name="message" class="form-control" required></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Send</button>

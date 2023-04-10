@@ -20,6 +20,7 @@ class Message(db.Model):
     receiver = db.Column(db.String(100), db.ForeignKey('people.username'))
     sender = db.Column(db.String(100), db.ForeignKey('people.username'))
     content = db.Column(db.String(500), unique=True)
+    subject = db.Column(db.String(500), unique=True)
 
 class Places(db.Model):
     __tablename__ = 'places'

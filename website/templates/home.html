@@ -24,52 +24,25 @@
                     
                         <select name="place" class="search-item">
                             <option value="">Location</option>
-                            <optgroup label="Residential College">
-                                <option value="Benjamin Franklin">Benjamin Franklin</option>
-                                <option value="Pauli Murrary">Pauli Murrary</option>
-                                <option value="Timothy Dwight">Timothy Dwight</option>
-                                <option value="Jonathan Edwards">Jonathan Edwards</option>
-                                <option value="Ezra Stiles">Ezra Stiles</option>
-                                <option value="Morse">Morse</option>
-                                <option value="Berkeley">Berkeley</option>
-                                <option value="Saybrook">Saybrook</option>
-                                <option value="Pierson">Pierson</option>    
-                                <option value="Davenport">Davenport</option>
-                                <option value="Trumbull">Trumbull</option>
-                                <option value="Silliman">Silliman</option>
-                                <option value="Grace Hopper">Grace Hopper</option>
-                                <option value="Branford">Branford</option>
-                            </optgroup>
-                            <optgroup label="Schwarzman Center">
-                                <option value="The Elm">The Elm</option>
-                                <option value="Commons">Commons</option>
-                                <option value="The Well">The Well</option>
-                            </optgroup>
-                            <optgroup label="South">
-                                <option value="MIA">Miami</option>
-                            </optgroup>
+                            {%  for key, value in places.items() %}
+                                <optgroup label="{{ key }}">
+                                    {% for place in value %}
+                                        <option value="{{ place }}">{{ place }}</option>
+                                    {%  endfor %}
+                                </optgroup>
+                            {%  endfor %}
                         </select>
                     
                     
                         <select name="classifier" class="search-item">
                             <option value="">Classifier</option>
-                            <optgroup label="Electronic">
-                                <option value="Laptop">Laptop</option>
-                                <option value="Phone">Phone</option>
-                                <option value="Tablet">Tablet</option>
-                                <option value="Headphone">Headphone</option>
-                                <option value="Charger">Charger</option>
-                            </optgroup>
-                            <optgroup label="Clothing">
-                                <option value="Shirt">Shirt</option>
-                                <option value="Pants">Pants</option>
-                                <option value="Shoes">Shoes</option>
-                                <option value="Hat">Hat</option>
-                            </optgroup>
-                            <optgroup label="Miscellaneous">
-                                <option value="Wallet">Wallet</option>
-                                <option value="Keys">Keys</option>
-                            </optgroup>
+                            {%  for key, value in classifiers.items() %}
+                                <optgroup label="{{ key }}">
+                                    {% for class in value %}
+                                        <option value="{{ class }}">{{ class }}</option>
+                                    {%  endfor %}
+                                </optgroup>
+                            {%  endfor %}
                         </select>
                     
                     
@@ -116,7 +89,12 @@
         {%  else %}
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">User: {{ lost_object.loster }}</h5>
+                    <div style="display: flex; justify-content: space-between;">
+                        <h5 class="card-title">User: {{ lost_object.loster }}</h5>
+                        <a  style="margin-left: auto;" href="/message/{{ lost_object.loster }}" class="card-link">
+                            <i class="fa fa-telegram" aria-hidden="true"></i>
+                        </a>
+                    </div>
                     <div class="card-image">
                         <img src="../static/images/{{ lost_object.image }}" alt="{{ lost_object.description }}">
                     </div>  
@@ -125,13 +103,6 @@
                     <!-- show the object's location on the left and the object's classifier on the right -->
                     <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
                     <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
-                    
-                    <h5>
-                        <a href="/message/{{ lost_object.loster }}" class="card-link">
-                            <i class="fa fa-telegram" aria-hidden="true"></i>
-                        </a>
-                    </h5>
-
                 </div>
             </div>
         {%  endif %}
@@ -160,7 +131,12 @@
         {%  else %} 
             <div class="card">
                 <div class="card-body">
-                    <span><h5 class="card-title">User: {{ found_object.founder }}</h5></span>
+                    <div style="display: flex; justify-content: space-between;">
+                        <h5 class="card-title">User: {{ found_object.founder }}</h5>
+                        <a style="margin-left: auto;" href="/message/{{ found_object.founder }}" class="card-link">
+                            <i class="fa fa-telegram" aria-hidden="true"></i>
+                        </a>
+                    </div>
                     <div class="card-image">
                         <img src="../static/images/{{ found_object.image }}" alt="{{ found_object.description }}">
                     </div>  
@@ -169,11 +145,6 @@
                     <!-- show the object's location on the left and the object's classifier on the right -->
                     <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
                     <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
-                    <h5>
-                        <a href="/message/{{ found_object.founder }}" class="card-link">
-                            <i class="fa fa-telegram" aria-hidden="true"></i>
-                        </a>
-                    </h5>
                 </div>
             </div>
         {% endif %}

@@ -84,7 +84,7 @@
                 <div class="card">
                     <div class="card-body">
                         {% for message in user_messages %}
-                            <p class="card-title"><strong>{{ message.sender }}</strong>: {{ message.content }}</p>
+                            <p class="card-title"><strong>{{ message.sender }}: {{message.subject}}</strong> - {{ message.content }}</p>
                             <!-- show the object's location on the left and the object's classifier on the right -->
                             <h5>
                                 <a href="/delete-message/{{ message.id }}" class="card-link">
@@ -101,7 +101,7 @@
                 <div class="card">
                     <div class="card-body">
                         {% for message in sent_messages %}
-                            <p class="card-title"><strong>To: {{ message.receiver }}</strong> - {{ message.content }}</p>
+                            <p class="card-title"><strong>To {{ message.receiver }}: {{message.subject}}</strong> - {{ message.content }}</p>
                             <!-- show the object's location on the left and the object's classifier on the right -->
                             <h5>
                                 <a href="/delete-message/{{ message.id }}" class="card-link">
