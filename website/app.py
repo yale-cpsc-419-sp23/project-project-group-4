@@ -244,8 +244,8 @@ def search_objects():
         date = request.form.get('lost_date')
         
         if query and not place and not classifier and not date:
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query)).all()
+            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))).all()
+            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query))).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif not query and place and not classifier and not date:
             lost_objects = LostObjects.query.filter(LostObjects.place.contains(place)).all()
@@ -260,16 +260,16 @@ def search_objects():
             found_objects = FoundObjects.query.filter(FoundObjects.found_date.contains(date)).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif query and place and not classifier and not date:
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.place.contains(place)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.place.contains(place)).all()
+            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.place.contains(place)).all()
+            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.place.contains(place)).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif query and not place and classifier and not date:
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.classifier.contains(classifier)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.classifier.contains(classifier)).all()
+            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.classifier.contains(classifier)).all()
+            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.classifier.contains(classifier)).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif query and not place and not classifier and date:
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.found_date.contains(date)).all()
+            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.lost_date.contains(date)).all()
+            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.found_date.contains(date)).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif not query and place and classifier and not date:
             lost_objects = LostObjects.query.filter(LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier)).all()
@@ -284,16 +284,16 @@ def search_objects():
             found_objects = FoundObjects.query.filter(FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif query and place and classifier and not date:
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier)).all()
+            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier)).all()
+            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier)).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif query and place and not classifier and date:
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.place.contains(place) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.place.contains(place) & FoundObjects.found_date.contains(date)).all()
+            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.place.contains(place) & LostObjects.lost_date.contains(date)).all()
+            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.place.contains(place) & FoundObjects.found_date.contains(date)).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif query and not place and classifier and date:
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
+            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
+            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
             return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
         elif not query and place and classifier and date:
             lost_objects = LostObjects.query.filter(LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
