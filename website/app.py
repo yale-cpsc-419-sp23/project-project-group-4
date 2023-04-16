@@ -254,7 +254,7 @@ def search_found_objects():
         for found_object in found_objects:
             if found_object.founder == cas.username: 
                 html += f"""
-                <div class="card">
+                <div class="card my-card">
                     <div class="card-body">
                         
                         <h5 class="card-title">User: {found_object.founder}</h5>
@@ -272,7 +272,7 @@ def search_found_objects():
                 """
             else: 
                 html += f"""
-                <div class="card">
+                <div class="card my-card">
                     <div class="card-body">
                         <div style="display: flex; justify-content: space-between;">
                             <h5 class="card-title">User: {found_object.founder}</h5>
@@ -298,7 +298,7 @@ def search_found_objects():
 # make a /search-objects route that would take a query string and search for the lost objects
 @app.route('/search-lost-objects', methods=['GET', 'POST'])
 @login_required
-def search_objects():
+def search_lost_objects():
     if request.method == 'POST':
         query = request.args.get('query')
         place = request.args.get('place')
@@ -316,9 +316,9 @@ def search_objects():
         lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
         html = ""
         for lost_object in lost_objects:
-            if lost_objects.loster == cas.username: 
+            if lost_object.loster == cas.username: 
                 html += f"""
-                <div class="card">
+                <div class="my-card card">
                     <div class="card-body">
                         <h5 class="card-title">User: {lost_object.loster}</h5>
                         <div class="card-image">
@@ -335,7 +335,7 @@ def search_objects():
                 """
             else: 
                 html += f"""
-                <div class="card">
+                <div class="my-card card">
                     <div class="card-body">
                         <div style="display: flex; justify-content: space-between;">
                             <h5 class="card-title">User: {lost_object.loster}</h5>

@@ -5,6 +5,7 @@
     <!-- add a search bar to search for objects. The route is /search-objects -->
     <script>
         function handleLost(response) {
+            console.log(response); 
             $('#lostcards').html(response);
         }
 
@@ -123,12 +124,10 @@
         </div>
     </div>
     
-    <div id="lost_and_found">
-        <div id="lostcards" class="card-container"></div>
+        <div id="lostcards" class="card-container my-card-container"></div>
         
             <!-- show all the found objects. This was passed in as `found_objects`. -->
-        <div class="card-container" id="foundcards"></div>
-    </div>
+        <div id="foundcards" class="card-container my-card-container"></div>
     </div>
 
 
