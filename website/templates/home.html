@@ -3,26 +3,87 @@
 
 {% block content %}
     <!-- add a search bar to search for objects. The route is /search-objects -->
+    <script>
+        function handleLost(response) {
+            $('#lostcards').html(response);
+        }
+
+        function handleFound(response) {
+            $('#foundcards').html(response);
+        }
+
+        let request = null;
+  
+        function getResults() {
+            if(request) request.abort(); 
+            let query = $('#query').val();
+            if(!query) {
+                query = "";
+            }
+            query = encodeURIComponent(query);
+            let place = $('#place').val();
+            if(!place) {
+                place = "";
+            }
+            place = encodeURIComponent(place);
+            let classifier = $('#classifier').val();
+            if(!classifier) {
+                classifier = "";
+            }
+            classifier = encodeURIComponent(classifier);
+            let date = $('#date').val();
+            if(!date) {
+                date = "";
+            }
+            date = encodeURIComponent(date);
+            let lost_url = '/search-lost-objects?query=' + query + '&place=' + place 
+            + '&classifier=' + classifier + '&lost_date=' + date; 
+            request = $.ajax(
+            {
+                type: 'POST',
+                url: lost_url,
+                success: handleLost
+            }
+            );
+            let found_url = '/search-found-objects?query=' + query + '&place=' + place 
+            + '&classifier=' + classifier + '&lost_date=' + date; 
+            request = $.ajax(
+            {
+                type: 'POST',
+                url: found_url,
+                success: handleFound
+            }
+            );
+        }
+  
+        function start()
+        {
+            getResults(); 
+            $('.search-bar').on('input', getResults); 
+            $('.search-item').on('input', getResults); 
+        }
+        
+        $('document').ready(start);
+    </script>
     <div class="search-container">
-        <form method="POST" action="/search-objects" class="needs-validation" autocomplete="off">
+        <form id = "objects_form" method="POST" action="/search-objects" class="needs-validation" autocomplete="off">
             <div class="form-group">
                 <div class="search-bar">
-                    <input type="text" placeholder="Search keywords" name="query" class="form-control" list="object_list">
-                    <button type="submit" src=""><img src="{{ url_for('static', filename='search.png') }}" alt=""></button>
+                    <input id="query" type="text" placeholder="Search keywords" name="query" class="form-control" list="object_list">
                 </div>
                 <div class="advanced-search">
                     
-                        <datalist id="object_list">
+                        <!-- <datalist id="object_list">
                             {% for lost_object in lost_objects %}
                                 <option value="{{ lost_object.description }}">
                             {% endfor %}
                             {% for found_object in found_objects %}
                                 <option value="{{ found_object.description }}">
                             {% endfor %}
-                        </datalist>
+                        </datalist> -->
                     
                     
-                        <select name="place" class="search-item">
+                        <select id="place" name="place" class="search-item">
                             <option value="">Location</option>
                             {%  for key, value in places.items() %}
                                 <optgroup label="{{ key }}">
@@ -34,7 +95,7 @@
                         </select>
                     
                     
-                        <select name="classifier" class="search-item">
+                        <select id="classifier" name="classifier" class="search-item">
                             <option value="">Classifier</option>
                             {%  for key, value in classifiers.items() %}
                                 <optgroup label="{{ key }}">
@@ -46,18 +107,11 @@
                         </select>
                     
                     
-                        <input type="date" name="lost_date" class="search-item">
-                        <form method="GET" action="/home" class="needs-validation">
-                            <button type="submit" class="search-item reset-btn">Reset</button>
-                        </form>
-
-                        
+                        <input id="date" type="date" name="lost_date" class="search-item">
                 </div>
             </div>
         </form>
     </div>
-    
-    
 
     <!-- show all the lost objects. This was passed in as `lost_objects`. -->
     <input type="checkbox" id="switch" aria-hidden="true">
@@ -69,86 +123,12 @@
         </div>
     </div>
     
-    <div id="lostcards" class="card-container my-card-container">
-    {% for lost_object in lost_objects %}
-        {% if lost_object.loster == user %}
-            <div class="my-card card">
-                <div class="card-body">
-                    <h5 class="card-title">User: {{ lost_object.loster }}</h5>
-                    <div class="card-image">
-                        <img src="../static/images/{{ lost_object.image }}" alt="{{ lost_object.description }}">
-                    </div>  
-                    <p class="card-text">Description: {{ lost_object.description }}</p>
-                    <p class="card-text">Date: {{ lost_object.lost_date }}</p>
-                    <!-- show the object's location on the left and the object's classifier on the right -->
-                    <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
-                    <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
-                    
-                </div>
-            </div>
-        {%  else %}
-            <div class="my-card card">
-                <div class="card-body">
-                    <div style="display: flex; justify-content: space-between;">
-                        <h5 class="card-title">User: {{ lost_object.loster }}</h5>
-                        <a  style="margin-left: auto;" href="/message/{{ lost_object.loster }}" class="card-link">
-                            <i class="fa fa-telegram" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                    <div class="card-image">
-                        <img src="../static/images/{{ lost_object.image }}" alt="{{ lost_object.description }}">
-                    </div>  
-                    <p class="card-text">Description: {{ lost_object.description }}</p>
-                    <p class="card-text">Date: {{ lost_object.lost_date }}</p>
-                    <!-- show the object's location on the left and the object's classifier on the right -->
-                    <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ lost_object.place }} | {{ lost_object.classifier }}</h6>
-                    <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
-                </div>
-            </div>
-        {%  endif %}
-    {% endfor %}
+    <div id="lost_and_found">
+        <div id="lostcards" class="card-container"></div>
+        
+            <!-- show all the found objects. This was passed in as `found_objects`. -->
+        <div class="card-container" id="foundcards"></div>
     </div>
-
-    <!-- show all the found objects. This was passed in as `found_objects`. -->
-    <div class="card-container my-card-container" id="foundcards">
-    {% for found_object in found_objects %}
-        {% if found_object.founder == user %}
-            <div class="my-card card">
-                <div class="card-body">
-                    
-                    <h5 class="card-title">User: {{ found_object.founder }}</h5>
-                    <div class="card-image">
-                        <img src="../static/images/{{ found_object.image }}" alt="{{ found_object.description }}">
-                    </div>  
-                    <p class="card-text">Description: {{ found_object.description }}</p>
-                    <p class="card-text">Date: {{ found_object.found_date }}</p>
-                    <!-- show the object's location on the left and the object's classifier on the right -->
-                    <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
-                    <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
-                
-                </div>
-            </div>
-        {%  else %} 
-            <div class="card my-card">
-                <div class="card-body">
-                    <div style="display: flex; justify-content: space-between;">
-                        <h5 class="card-title">User: {{ found_object.founder }}</h5>
-                        <a style="margin-left: auto;" href="/message/{{ found_object.founder }}" class="card-link">
-                            <i class="fa fa-telegram" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                    <div class="card-image">
-                        <img src="../static/images/{{ found_object.image }}" alt="{{ found_object.description }}">
-                    </div>  
-                    <p class="card-text">Description: {{ found_object.description }}</p>
-                    <p class="card-text">Date: {{ found_object.found_date }}</p>
-                    <!-- show the object's location on the left and the object's classifier on the right -->
-                    <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ found_object.place }} | {{ found_object.classifier }}</h6>
-                    <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
     </div>
 
 

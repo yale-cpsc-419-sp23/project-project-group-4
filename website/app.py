@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 from .models import LostObjects, FoundObjects, People, Message
 from . import db
@@ -232,80 +232,130 @@ def delete_message(id):
     return redirect(url_for('user'))
 
 #################################################################################################################################################
+@app.route('/search-found-objects', methods=['GET', 'POST'])
+@login_required
+def search_found_objects():
+    if request.method == 'POST':
+        query = request.args.get('query')
+        place = request.args.get('place')
+        classifier = request.args.get('classifier')
+        date = request.args.get('lost_date')
+        if not query: 
+            query = '%'
+        if not place:
+            place = '%'
+        if not classifier:
+            classifier = '%'
+        if not date:
+            date = '%'
+        
+        found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
+        html = ""
+        for found_object in found_objects:
+            if found_object.founder == cas.username: 
+                html += f"""
+                <div class="card">
+                    <div class="card-body">
+                        
+                        <h5 class="card-title">User: {found_object.founder}</h5>
+                        <div class="card-image">
+                            <img src="../static/images/{found_object.image}" alt="{found_object.description}">
+                        </div>  
+                        <p class="card-text">Description: {found_object.description}</p>
+                        <p class="card-text">Date: {found_object.found_date}</p>
+                        <!-- show the object's location on the left and the object's classifier on the right -->
+                        <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {found_object.place} | {found_object.classifier}</h6>
+                        <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
+                    
+                    </div>
+                </div>
+                """
+            else: 
+                html += f"""
+                <div class="card">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between;">
+                            <h5 class="card-title">User: {found_object.founder}</h5>
+                            <a style="margin-left: auto;" href="/message/{found_object.founder}" class="card-link">
+                                <i class="fa fa-telegram" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="card-image">
+                            <img src="../static/images/{found_object.image}" alt="{found_object.description}">
+                        </div>  
+                        <p class="card-text">Description: {found_object.description}</p>
+                        <p class="card-text">Date: {found_object.found_date}</p>
+                        <!-- show the object's location on the left and the object's classifier on the right -->
+                        <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {found_object.place} | {found_object.classifier}</h6>
+                        <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
+                    </div>
+                </div>
+                """
+
+        return make_response(html) 
+
 # Search objects
 # make a /search-objects route that would take a query string and search for the lost objects
-@app.route('/search-objects', methods=['GET', 'POST'])
+@app.route('/search-lost-objects', methods=['GET', 'POST'])
 @login_required
 def search_objects():
     if request.method == 'POST':
-        query = request.form.get('query')
-        place = request.form.get('place')
-        classifier = request.form.get('classifier')
-        date = request.form.get('lost_date')
+        query = request.args.get('query')
+        place = request.args.get('place')
+        classifier = request.args.get('classifier')
+        date = request.args.get('lost_date')
+        if not query: 
+            query = '%'
+        if not place:
+            place = '%'
+        if not classifier:
+            classifier = '%'
+        if not date:
+            date = '%'
         
-        if query and not place and not classifier and not date:
-            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))).all()
-            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query))).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif not query and place and not classifier and not date:
-            lost_objects = LostObjects.query.filter(LostObjects.place.contains(place)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.place.contains(place)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif not query and not place and classifier and not date:
-            lost_objects = LostObjects.query.filter(LostObjects.classifier.contains(classifier)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.classifier.contains(classifier)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif not query and not place and not classifier and date:
-            lost_objects = LostObjects.query.filter(LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.found_date.contains(date)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif query and place and not classifier and not date:
-            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.place.contains(place)).all()
-            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.place.contains(place)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif query and not place and classifier and not date:
-            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.classifier.contains(classifier)).all()
-            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.classifier.contains(classifier)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif query and not place and not classifier and date:
-            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.found_date.contains(date)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif not query and place and classifier and not date:
-            lost_objects = LostObjects.query.filter(LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif not query and place and not classifier and date:
-            lost_objects = LostObjects.query.filter(LostObjects.place.contains(place) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.place.contains(place) & FoundObjects.found_date.contains(date)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif not query and not place and classifier and date:
-            lost_objects = LostObjects.query.filter(LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif query and place and classifier and not date:
-            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier)).all()
-            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif query and place and not classifier and date:
-            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.place.contains(place) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.place.contains(place) & FoundObjects.found_date.contains(date)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif query and not place and classifier and date:
-            lost_objects = LostObjects.query.filter((LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query))& LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter((FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif not query and place and classifier and date:
-            lost_objects = LostObjects.query.filter(LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        elif query and place and classifier and date:
-            lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
-            found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
-            return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
-        else:
-            # do nothing
-            return redirect(url_for('home'))
+        lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
+        html = ""
+        for lost_object in lost_objects:
+            if lost_objects.loster == cas.username: 
+                html += f"""
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">User: {lost_object.loster}</h5>
+                        <div class="card-image">
+                            <img src="../static/images/{lost_object.image}" alt="{lost_object.description}">
+                        </div>  
+                        <p class="card-text">Description: {lost_object.description}</p>
+                        <p class="card-text">Date: {lost_object.lost_date}</p>
+                        <!-- show the object's location on the left and the object's classifier on the right -->
+                        <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {lost_object.place} | {lost_object.classifier}</h6>
+                        <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
+                        
+                    </div>
+                </div>
+                """
+            else: 
+                html += f"""
+                <div class="card">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between;">
+                            <h5 class="card-title">User: {lost_object.loster}</h5>
+                            <a  style="margin-left: auto;" href="/message/{lost_object.loster}" class="card-link">
+                                <i class="fa fa-telegram" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="card-image">
+                            <img src="../static/images/{lost_object.image}" alt="{lost_object.description}">
+                        </div>  
+                        <p class="card-text">Description: {lost_object.description}</p>
+                        <p class="card-text">Date: {lost_object.lost_date}</p>
+                        <!-- show the object's location on the left and the object's classifier on the right -->
+                        <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {lost_object.place} | {lost_object.classifier}</h6>
+                        <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
+                    </div>
+                </div>
+                """
+        return make_response(html)
+        
 
 @app.route('/user', methods=['GET'])
 @login_required
