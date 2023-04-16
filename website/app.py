@@ -7,9 +7,11 @@ from flask_cas import CAS, login_required, login, logout
 # We want to import the file logger.py
 from logger import logger
 import os
+import yalies
 
 app = Flask(__name__, template_folder='./templates')
 cas = CAS(app)
+api = yalies.API('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2ODE2NzExNjMsInN1YiI6ImFteTI0In0.Xg1CivwFdFtZw7h-nAM-MHmcunVEefeYsFHHKXg33J8')
 app.config['CAS_SERVER'] = 'https://secure6.its.yale.edu/cas/'
 app.config['CAS_AFTER_LOGIN'] = 'https://127.0.0.1:17290/'
 app.config['CAS_AFTER_LOGOUT'] = 'https://127.0.0.1:17290/'
@@ -55,21 +57,27 @@ def home():
     lost_objects = LostObjects.query.all()
     # query all the found objects
     found_objects = FoundObjects.query.all()
+    user = api.person(filters={'netid': cas.username})
+    username = user.first_name + " " + user.last_name
     
-    return render_template("home.html", user=cas.username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
+    return render_template("home.html", user=username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
 
 @app.route('/post', methods=['GET'])
 # @login_required
 def post():
-    return render_template("post.html", user=cas.username, classifiers=classifiers, places=places)
+    user = api.person(filters={'netid': cas.username})
+    username = user.first_name + " " + user.last_name
+    return render_template("post.html", user=username, classifiers=classifiers, places=places)
 
 @app.route('/message/<id>', methods=['GET', 'POST'])
 @login_required
 def message(id):
     if request.method == 'POST':
+        user = api.person(filters={'netid': cas.username})
+        username = user.first_name + " " + user.last_name
         subject = request.form.get('subject')
         msg = request.form.get('message')
-        new_message = Message(sender=cas.username, receiver=id, content=msg, subject=subject)
+        new_message = Message(sender=username, receiver=id, content=msg, subject=subject)
         db.session.add(new_message)
         db.session.commit()
         flash('Message sent', category='success')
@@ -81,7 +89,8 @@ def message(id):
 @app.route('/post_loss', methods=['POST'])
 @login_required
 def post_loss():
-    loster = cas.username
+    user = api.person(filters={'netid': cas.username})
+    loster = user.first_name + " " + user.last_name
     description = request.form.get('description')
     place = request.form.get('place')
     classifier = request.form.get('classifier')
@@ -91,7 +100,7 @@ def post_loss():
     file = request.files['file']
     filename = file.filename
     if filename == '':
-            image = 'image_not_available.png'
+        image = 'noimage.jpeg'
     else:
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         image = filename
@@ -117,7 +126,7 @@ def update_lost_object(id):
         file = request.files['file']
         filename = file.filename
         if filename == '':
-            image = 'image_not_available.png'
+            image = 'noimage.jpeg'
         else:
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image = filename
@@ -133,7 +142,9 @@ def update_lost_object(id):
             return redirect(url_for('user'))
     else:
         date = lost_object.lost_date.strftime('%Y-%m-%d')
-        return render_template("update_loss.html", user=cas.username, lost_object=lost_object, date=date, places=places, classifiers=classifiers)
+        user = api.person(filters={'netid': cas.username})
+        username = user.first_name + " " + user.last_name
+        return render_template("update_loss.html", user=username, lost_object=lost_object, date=date, places=places, classifiers=classifiers)
 
 # make a route to delete a lost object use a route that would be like /delete-lost-object/<id>
 @app.route('/delete-lost-object/<id>', methods=['GET'])
@@ -153,7 +164,8 @@ def delete_lost_object(id):
 @app.route('/post_found', methods=['POST'])
 @login_required
 def post_found():
-    founder = cas.username
+    user = api.person(filters={'netid': cas.username})
+    founder = user.first_name + " " + user.last_name
     description = request.form.get('description')
     place = request.form.get('place')
     classifier = request.form.get('classifier')
@@ -164,7 +176,7 @@ def post_found():
     filename = file.filename
 
     if filename == '':
-        image = 'image_not_available.png'
+        image = 'noimage.jpeg'
     else:
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         image = filename
@@ -191,7 +203,7 @@ def update_found_object(id):
         file = request.files['file']
         filename = file.filename
         if filename == '':
-            image = 'image_not_available.png'
+            image = 'noimage.jpeg'
         else:
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image = filename
@@ -207,7 +219,9 @@ def update_found_object(id):
             return redirect(url_for('user'))
     else:
         date = found_object.found_date.strftime('%Y-%m-%d')
-        return render_template("update_found.html", user=cas.username, found_object=found_object, date=date, places=places, classifiers=classifiers)
+        user = api.person(filters={'netid': cas.username})
+        username = user.first_name + " " + user.last_name
+        return render_template("update_found.html", user=username, found_object=found_object, date=date, places=places, classifiers=classifiers)
 
 # make a route to delete a found object use a route that would be like /delete-found-object/<id>
 @app.route('/delete-found-object/<id>', methods=['GET'])
@@ -249,10 +263,13 @@ def search_found_objects():
         if not date:
             date = '%'
         
+        user = api.person(filters={'netid': cas.username})
+        username = user.first_name + " " + user.last_name
+        
         found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
         html = ""
         for found_object in found_objects:
-            if found_object.founder == cas.username: 
+            if found_object.founder == username: 
                 html += f"""
                 <div class="card my-card">
                     <div class="card-body">
@@ -315,8 +332,10 @@ def search_lost_objects():
         
         lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
         html = ""
+        user = api.person(filters={'netid': cas.username})
+        username = user.first_name + " " + user.last_name
         for lost_object in lost_objects:
-            if lost_object.loster == cas.username: 
+            if lost_object.loster == username: 
                 html += f"""
                 <div class="my-card card">
                     <div class="card-body">
@@ -363,12 +382,15 @@ def user():
     # log the getting of the index page
     logger.debug('Getting the user objects page')
     # get the data for this specific user
-    user_data = People.query.filter(People.username.contains(cas.username)).all()
-    user_lost_objects = LostObjects.query.filter(LostObjects.loster.contains(cas.username)).all()
-    user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(cas.username)).all()
+    user = api.person(filters={'netid': cas.username})
+    username = user.first_name + " " + user.last_name
+    userimage = user.image
+    user_data = People.query.filter(People.username.contains(username)).all()
+    user_lost_objects = LostObjects.query.filter(LostObjects.loster.contains(username)).all()
+    user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(username)).all()
     # get the data for this specific user
-    user_messages = Message.query.filter(Message.receiver.contains(cas.username)).all()
-    sent_messages = Message.query.filter(Message.sender.contains(cas.username)).all()
+    user_messages = Message.query.filter(Message.receiver.contains(username)).all()
+    sent_messages = Message.query.filter(Message.sender.contains(username)).all()
     
-    return render_template("user.html", username=cas.username, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
+    return render_template("user.html", username=username, image=userimage, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
                            num_lost=len(user_lost_objects), num_found=len(user_found_objects),num_messages=len(user_messages), user_messages=user_messages, sent_messages=sent_messages)
