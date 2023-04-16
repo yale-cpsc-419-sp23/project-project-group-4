@@ -343,7 +343,7 @@ textarea {
   color: rgb(255, 255, 255);
 }
 
-.card-container {
+.my-card-container {
   /* display: flex; */
   justify-content: center;
   flex-wrap: wrap;
@@ -357,7 +357,7 @@ textarea {
 
 }
 
-.card {
+.my-card {
   width: 400px;
   margin: 10px 20px;
   border: 1px solid #00356B !important;
@@ -376,29 +376,16 @@ textarea {
 }
 
 .card-image img {
+  min-height: 200px; /* set the minimum height */
   max-height: 200px;
-  max-width: 100%;
-  /* width: 100%; */
-  /* object-fit: cover; */
+  max-width: 350px;
+  object-position: center;
 }
 
 .my-card-body {
   padding: 10px;
 }
 
-/* .card-title {
-  margin-top: 0;
-}
-
-.card-text {
-  margin: 0;
-  font-weight: bold;
-} */
-
-.my-card-description {
-  margin: 10px 0;
-  white-space: pre-wrap;
-}
 #foundcards, #lostcards {
   background-color: #00356B;
 }
@@ -414,7 +401,8 @@ textarea {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-  width: 100%;
+  width: 95%;
+  /* align-items: center; */
 }
 
 .user-card{
@@ -470,6 +458,46 @@ textarea {
   padding: 20px;
 }
 
+.user-body .heading {
+  text-align: center;
+  color: #00356B;
+  font-size: 25px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.user-body .card {
+  margin: 20px 5px;
+  border-radius: 20px;
+  min-width: 500px;
+}
+
+.left-buttons {
+  display: flex; 
+  justify-content: space-between;
+}
+
+.card-contents {
+  display: flex; 
+  justify-content: space-around;
+  flex-wrap: wrap
+}
+
+.card-contents .card-image {
+  min-width: 350px;
+}
+.card-contents .card-image img {
+  min-height: 200px; /* set the minimum height */
+  max-height: 200px;
+  object-position: center;
+}
+
+.card-info {
+  min-width: 300px;
+  display: flex; 
+  flex-direction: column;
+}
 
 /*********************** Drop Down ****************/
 .dropdown {

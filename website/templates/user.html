@@ -22,12 +22,11 @@
         </div>
         <div class="user-body">
             <div id="lost-body">
-                <h3 >Displaying {{num_lost}} lost objects</h3>
+                <h3 class="heading">You have reported {{num_lost}} lost objects</h3>
                 {% for user_object in user_lost_objects %}
                 <div class="card">
                     <div class="card-body">
-                        <div style="display: flex; justify-content: space-between;">
-                            <h5 class="card-title">User: {{ user_object.loster }}</h5>
+                        <div class="left-buttons">
                             <a style="margin-left: auto;" href="/delete-lost-object/{{ user_object.id }}" class="card-link">
                                 <i class="fa fa-trash-o card-icon" aria-hidden="true"></i>
                             </a>
@@ -36,13 +35,19 @@
                             </a>
                         </div>
                         
-                        <div class="card-image">
-                            <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}">
-                        </div> 
-                        <p class="card-text">Description: {{ user_object.description }}</p>
-                        <p class="card-text">Date: {{ user_object.lost_date }}</p>
-                        <!-- show the object's location on the left and the object's classifier on the right -->
-                        <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
+                        
+                        <div class="card-contents">
+                            <div class="card-image">
+                                <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}">
+                            </div> 
+                            <div class="card-info" >   
+                                <p class="card-text">Description: {{ user_object.description }}</p>
+                                <p class="card-text">Date: {{ user_object.lost_date }}</p>
+                                <p class="card-subtitle mb-2 text-muted">Classifier: {{ user_object.classifier }}</p>
+                                <p class="card-subtitle mb-2 text-muted">Location: {{ user_object.place }}</p>
+                                <!-- <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6> -->
+                            </div>
+                        </div>
                         
                     </div>
                 </div>
@@ -52,12 +57,11 @@
 
     <!-- Display your found objects. This was passed in as `user_found_objects`. There should also be a little x that deletes the object. remember the route is /delete-found-object/<id> -->
             <div id="found-body" class="hidden-user-body">
-                <h3 >Displaying {{num_found}} found objects</h3>
+                <h3 class="heading">You have reported {{num_found}} found objects</h3>
                 {% for user_object in user_found_objects %}
                     <div class="card">
                         <div class="card-body">
-                            <div style="display: flex; justify-content: space-between;">
-                                <h5 class="card-title">User: {{ user_object.founder }}</h5>
+                            <div class="left-buttons">
                                 <a style="margin-left: auto;" href="/delete-found-object/{{ user_object.id }}" class="card-link">
                                     <i class="fa fa-trash-o card-icon" aria-hidden="true"></i>
                                 </a>
@@ -65,14 +69,17 @@
                                     <i class="fa fa-pencil-square-o card-icon" aria-hidden="true"></i>
                                 </a>
                             </div>
-                            
-                            <div class="card-image">
-                                <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}">
-                            </div> 
-                            <p class="card-text">Description: {{ user_object.description }}</p>
-                            <p class="card-text">Date: {{ user_object.found_date }}</p>
-                            <!-- show the object's location on the left and the object's classifier on the right -->
-                            <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {{ user_object.place }} | {{ user_object.classifier }}</h6>
+                            <div class="card-contents">
+                                <div class="card-image">
+                                    <img src="../static/images/{{ user_object.image }}" alt="{{ user_object.description }}">
+                                </div> 
+                                <div class="card-info" >   
+                                    <p class="card-text">Description: {{ user_object.description }}</p>
+                                    <p class="card-text">Date: {{ user_object.found_date }}</p>
+                                    <p class="card-subtitle mb-2 text-muted">Classifier: {{ user_object.classifier }}</p>
+                                    <p class="card-subtitle mb-2 text-muted">Location: {{ user_object.place }}</p>
+                                </div>
+                            </div>
                             
                         </div>
                     </div>
@@ -80,7 +87,7 @@
             </div>
 
             <div id="msg-body" class="hidden-user-body">
-                <h3 >Displaying {{num_messages}} messages</h3>
+                <h3 class="heading">Inbox: {{num_messages}} messages</h3>
                 {% for message in messages %}
                 <div class="card">
                     <div class="card-body">

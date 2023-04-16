@@ -95,11 +95,11 @@
             <label id="lost-label" class="toggle-label" for="switch" aria-hidden="true">Lost Items</label>
         </div>
     </div>
-
-    <div id="lostcards" class="card-container">
+    
+    <div id="lostcards" class="card-container my-card-container">
     {% for lost_object in lost_objects %}
         {% if lost_object.loster == user %}
-            <div class="card">
+            <div class="my-card card">
                 <div class="card-body">
                     <h5 class="card-title">User: {{ lost_object.loster }}</h5>
                     <div class="card-image">
@@ -114,7 +114,7 @@
                 </div>
             </div>
         {%  else %}
-            <div class="card">
+            <div class="my-card card">
                 <div class="card-body">
                     <h5 class="card-title">User: {{ lost_object.loster }}</h5>
                     <div class="card-image">
@@ -139,10 +139,10 @@
     </div>
 
     <!-- show all the found objects. This was passed in as `found_objects`. -->
-    <div class="card-container" id="foundcards">
+    <div class="card-container my-card-container" id="foundcards">
     {% for found_object in found_objects %}
         {% if found_object.founder == user %}
-            <div class="card">
+            <div class="my-card card">
                 <div class="card-body">
                     
                     <h5 class="card-title">User: {{ found_object.founder }}</h5>
@@ -158,7 +158,7 @@
                 </div>
             </div>
         {%  else %} 
-            <div class="card">
+            <div class="card my-card">
                 <div class="card-body">
                     <span><h5 class="card-title">User: {{ found_object.founder }}</h5></span>
                     <div class="card-image">

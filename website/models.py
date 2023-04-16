@@ -1,7 +1,7 @@
 from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
-from datetime import datetime
+from datetime import datetime, date
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 class People(db.Model):
     __tablename__ = 'people'
     username = db.Column(db.String(100), primary_key=True) 
-    joined_date = db.Column(db.DateTime, default=datetime.utcnow)
+    joined_date = db.Column(db.Date, default=datetime.utcnow().date())
     num_lost_items = db.Column(db.Integer, default=0)
     num_found_items = db.Column(db.Integer, default=0)
     is_admin = db.Column(db.Boolean, default=False)
@@ -36,7 +36,7 @@ class LostObjects(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     loster = db.Column(db.String(100), db.ForeignKey('people.username'))
     description = db.Column(db.String(1000))
-    lost_date = db.Column(db.DateTime, default=datetime.utcnow)
+    lost_date = db.Column(db.Date, default=datetime.utcnow().date())
     # place_id = db.Column(db.Integer, db.ForeignKey('places.id'))
     place = db.Column(db.String(100))
     # classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
@@ -49,7 +49,7 @@ class FoundObjects(db.Model):
     founder = db.Column(db.String(100), db.ForeignKey('people.username'))
     name = db.Column(db.String(100))
     description = db.Column(db.String(1000))
-    found_date = db.Column(db.DateTime, default=datetime.utcnow)
+    found_date = db.Column(db.Date, default=datetime.utcnow().date())
     # place_id = db.Column(db.Integer, db.ForeignKey('places.id'))
     place = db.Column(db.String(100))
     # classifier_id = db.Column(db.Integer, db.ForeignKey('classifier.id'))
