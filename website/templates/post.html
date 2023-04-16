@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <!-- <label class="input-label" for="classifier">Classifier:</label> -->
                         <select class="form-item" name="classifier" class="form-control" required>
-                            <option value="">Select a classifier</option>
+                            <option value="">Select a classifier*</option>
                             {%  for key, value in classifiers.items() %}
                                 <optgroup label="{{ key }}">
                                     {% for class in value %}
@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <!-- <label class="input-label" for="place">Place:</label> -->
                         <select class="form-item" name="place" class="form-control" required>
-                            <option value="">Select a location</option>
+                            <option value="">Select a location*</option>
                             {%  for key, value in places.items() %}
                                 <optgroup label="{{ key }}">
                                     {% for place in value %}
@@ -57,7 +57,7 @@
                     
                     <div class="form-group">
                         <!-- <label class="input-label" for="description">Description:</label> -->
-                        <textarea class="form-item" name="description" class="form-control" placeholder=" Description" required></textarea>
+                        <textarea class="form-item" name="description" class="form-control" placeholder=" Description*" required></textarea>
                         <div class="invalid-feedback">
                             Please provide a description of the found item.
                         </div>
@@ -70,8 +70,6 @@
                         </div>
                     </div>
 
-                   
-        
                     <button class="form-button" type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
@@ -82,7 +80,7 @@
                     <div class="form-group">
                         <!-- <label for="classifier">Classifier:</label> -->
                         <select class="form-item" name="classifier" class="form-control" required>
-                            <option value="">Select a classifier</option>
+                            <option value="">Select a classifier*</option>
                             {%  for key, value in classifiers.items() %}
                                 <optgroup label="{{ key }}">
                                     {% for class in value %}
@@ -113,7 +111,7 @@
                     <div class="form-group">
                         <!-- <label for="place">Place:</label> -->
                         <select class="form-item" name="place" class="form-control" required>
-                            <option value="">Select a location</option>
+                            <option value="">Select a location*</option>
                             {%  for key, value in places.items() %}
                                 <optgroup label="{{ key }}">
                                     {% for place in value %}
@@ -129,7 +127,7 @@
 
                     <div class="form-group">
                         <!-- <label for="description">Description:</label> -->
-                        <textarea class="form-item" name="description" class="form-control" placeholder=" Description" required></textarea>
+                        <textarea class="form-item" name="description" class="form-control" placeholder=" Description*" required></textarea>
                         <div class="invalid-feedback">
                             Please provide a description of the lost item.
                         </div>

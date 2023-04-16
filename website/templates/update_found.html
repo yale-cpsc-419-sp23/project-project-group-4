@@ -10,7 +10,7 @@
     <div class="container">
         <form method="POST" action="/update_found_object/{{found_object.id}}" class="needs-validation" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="classifier">Classifier:</label>
+                <label for="classifier">Classifier*:</label>
                 <select name="classifier" class="form-control" required>
                     <option value="{{ found_object.classifier }}" selected>{{ found_object.classifier }}</option>
                     {%  for key, value in classifiers.items() %}
@@ -27,7 +27,7 @@
             </div>
 
             <div class="form-group">
-                <label for="found_date">Date:</label>
+                <label for="found_date">Date*:</label>
                 <input type="date" name="found_date" class="form-control" value="{{date}}" required>
                 <div class="invalid-feedback">
                     Please provide a valid date.
@@ -35,7 +35,7 @@
             </div>
 
             <div class="form-group">
-                <label for="place">Place:</label>
+                <label for="place">Place*:</label>
                 <select name="place" class="form-control" required>
                     <option value="{{ found_object.place }}" selected>{{ found_object.place }}</option>
                     {%  for key, value in places.items() %}
@@ -52,7 +52,7 @@
             </div>
 
             <div class="form-group">
-                <label for="description">Description:</label>
+                <label for="description">Description*:</label>
                 <textarea name="description" class="form-control" required>{{found_object.description}}</textarea>
                 <div class="invalid-feedback">
                     Please provide a description of the found item.
@@ -61,7 +61,7 @@
 
             <div class="form-group">
                 <label for="file">Image:</label>
-                <input type="file"  class="form-control-file" name="file" accept="image/png, image/jpeg, image/jpg" required/>
+                <input type="file"  class="form-control-file" name="file" accept="image/png, image/jpeg, image/jpg"/>
             </div>
 
             <button type="submit" class="btn btn-primary">Update</button>
