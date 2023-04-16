@@ -418,9 +418,9 @@ textarea {
 }
 
 .user-card{
-  margin-top: 0vh;
-  display: flex;
-  flex-direction: column;
+  margin-top: 0;
+  /* display: flex;
+  flex-direction: column; */
   min-width: 30vw;
   /* text-align: center; */
   justify-content: center;
