@@ -524,3 +524,10 @@ textarea {
 .dropdown-content a:hover {background-color: #ddd; text-decoration: none; color: black}
 
 .dropdown:hover .dropdown-content {display: block;}
+
+/*************Messaging***********************/
+.rect {
+    border-radius: 25px;
+    background-color: rgb(189, 189, 189);
+    padding: 20px;
+}

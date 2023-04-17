@@ -19,8 +19,8 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     receiver = db.Column(db.String(100), db.ForeignKey('people.username'))
     sender = db.Column(db.String(100), db.ForeignKey('people.username'))
-    content = db.Column(db.String(500), unique=True)
-    subject = db.Column(db.String(500), unique=True)
+    content = db.Column(db.String(500))
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Places(db.Model):
     __tablename__ = 'places'

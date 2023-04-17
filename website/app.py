@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
+from sqlalchemy import func, distinct, and_, or_
 from .models import LostObjects, FoundObjects, People, Message
 from . import db
 from datetime import datetime
@@ -72,18 +74,19 @@ def post():
 @app.route('/message/<id>', methods=['GET', 'POST'])
 @login_required
 def message(id):
+    user = api.person(filters={'netid': cas.username})
+    username = user.first_name + " " + user.last_name
     if request.method == 'POST':
-        user = api.person(filters={'netid': cas.username})
-        username = user.first_name + " " + user.last_name
-        subject = request.form.get('subject')
         msg = request.form.get('message')
-        new_message = Message(sender=username, receiver=id, content=msg, subject=subject)
+        new_message = Message(sender=username, receiver=id, content=msg)
         db.session.add(new_message)
         db.session.commit()
-        flash('Message sent', category='success')
-        return redirect(url_for('home'))
-    else: 
-        return render_template("message.html", user=id)
+        return redirect(url_for('message', id=id))
+
+    all_messages = Message.query.all()
+    user_messages = Message.query.filter(Message.receiver.contains(username)).all()
+    sent_messages = Message.query.filter(Message.sender.contains(username)).all()
+    return render_template("message.html", user=username, send_to=id, sent_messages=sent_messages, user_messages=user_messages, all_messages=all_messages)
     
 # Post lost item
 @app.route('/post_loss', methods=['POST'])
@@ -389,8 +392,14 @@ def user():
     user_lost_objects = LostObjects.query.filter(LostObjects.loster.contains(username)).all()
     user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(username)).all()
     # get the data for this specific user
-    user_messages = Message.query.filter(Message.receiver.contains(username)).all()
-    sent_messages = Message.query.filter(Message.sender.contains(username)).all()
-    
+    # user_messages = Message.query.filter(Message.receiver.contains(username) | Message.sender.contains(username)).all()
+    # Get the latest message for each sender-receiver pair
+    user_messages = Message.query.filter(
+        or_(Message.sender == username, Message.receiver == username)
+    ).filter(
+        Message.date == db.session.query(db.func.max(Message.date)).filter(
+            and_(Message.sender == Message.sender, Message.receiver == Message.receiver)
+        ).scalar()
+    ).all()
     return render_template("user.html", username=username, image=userimage, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
-                           num_lost=len(user_lost_objects), num_found=len(user_found_objects),num_messages=len(user_messages), user_messages=user_messages, sent_messages=sent_messages)
+                           num_lost=len(user_lost_objects), num_found=len(user_found_objects), user_messages=user_messages)
