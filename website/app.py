@@ -238,16 +238,6 @@ def delete_found_object(id):
     # kleep the user on the same page
     flash('Object Deleted', category='error')
     return redirect(url_for('user'))
-
-@app.route('/delete-message/<id>', methods=['GET'])
-@login_required
-def delete_message(id):
-    message = Message.query.filter_by(id=id).first()
-    db.session.delete(message)
-    db.session.commit()
-    flash('Message Deleted', category='success')
-    return redirect(url_for('user'))
-
 #################################################################################################################################################
 @app.route('/search-found-objects', methods=['GET', 'POST'])
 @login_required
