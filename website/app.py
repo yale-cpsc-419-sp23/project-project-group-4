@@ -382,14 +382,18 @@ def user():
     user_lost_objects = LostObjects.query.filter(LostObjects.loster.contains(username)).all()
     user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(username)).all()
     # get the data for this specific user
-    # user_messages = Message.query.filter(Message.receiver.contains(username) | Message.sender.contains(username)).all()
-    # Get the latest message for each sender-receiver pair
-    user_messages = Message.query.filter(
-        or_(Message.sender == username, Message.receiver == username)
-    ).filter(
-        Message.date == db.session.query(db.func.max(Message.date)).filter(
-            and_(Message.sender == Message.sender, Message.receiver == Message.receiver)
-        ).scalar()
-    ).all()
+    user_messages = Message.query.filter(Message.receiver.contains(username) | Message.sender.contains(username)).all()
+    
+    last_messages = []
+    pairs = []
+
+    for message in reversed(user_messages):
+        if [message.receiver, message.sender] not in pairs:
+            pairs.append([message.receiver, message.sender])
+            pairs.append([message.sender, message.receiver])
+            last_messages.append(message)
+            
+        
+    
     return render_template("user.html", username=username, image=userimage, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
-                           num_lost=len(user_lost_objects), num_found=len(user_found_objects), user_messages=user_messages)
+                           num_lost=len(user_lost_objects), num_found=len(user_found_objects), user_messages=last_messages)
