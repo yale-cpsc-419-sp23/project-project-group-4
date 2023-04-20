@@ -83,10 +83,13 @@ def message(id):
         db.session.commit()
         return redirect(url_for('message', id=id))
 
+    send_to_user = api.person(filters={'netid': id})
+    send_to_username = send_to_user.first_name + " " + send_to_user.last_name
+    
     all_messages = Message.query.all()
     user_messages = Message.query.filter(Message.receiver.contains(username)).all()
     sent_messages = Message.query.filter(Message.sender.contains(username)).all()
-    return render_template("message.html", user=username, send_to=id, sent_messages=sent_messages, user_messages=user_messages, all_messages=all_messages)
+    return render_template("message.html", user=username, send_to_username=send_to_username, send_to=id, sent_messages=sent_messages, user_messages=user_messages, all_messages=all_messages)
     
 # Post lost item
 @app.route('/post_loss', methods=['POST'])
