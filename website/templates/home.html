@@ -67,7 +67,7 @@
         $('document').ready(start);
     </script>
     <div class="search-container">
-        <form id = "objects_form" method="POST" action="/search-objects" class="needs-validation" autocomplete="off">
+        <form id = "objects_form" method="POST" class="needs-validation" autocomplete="off" onsubmit="return false;">
             <div class="form-group">
                 <div class="search-bar">
                     <input id="query" type="text" placeholder="Search keywords" name="query" class="form-control" list="object_list">

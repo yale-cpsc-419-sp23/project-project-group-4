@@ -83,13 +83,13 @@ def message(id):
         db.session.commit()
         return redirect(url_for('message', id=id))
 
-    send_to_user = api.person(filters={'netid': id})
-    send_to_username = send_to_user.first_name + " " + send_to_user.last_name
+    # send_to_user = api.person(filters={'netid': id})
+    # send_to_username = send_to_user.first_name + " " + send_to_user.last_name
     
     all_messages = Message.query.all()
     user_messages = Message.query.filter(Message.receiver.contains(username)).all()
     sent_messages = Message.query.filter(Message.sender.contains(username)).all()
-    return render_template("message.html", user=username, send_to_username=send_to_username, send_to=id, sent_messages=sent_messages, user_messages=user_messages, all_messages=all_messages)
+    return render_template("message.html", user=username, send_to=id, sent_messages=sent_messages, user_messages=user_messages, all_messages=all_messages)
     
 # Post lost item
 @app.route('/post_loss', methods=['POST'])
@@ -262,7 +262,8 @@ def search_found_objects():
         user = api.person(filters={'netid': cas.username})
         username = user.first_name + " " + user.last_name
         
-        found_objects = FoundObjects.query.filter(FoundObjects.description.contains(query) & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
+        found_objects = FoundObjects.query.filter((FoundObjects.founder.contains(query) | FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) \
+                                                  & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
         html = ""
         for found_object in found_objects:
             if found_object.founder == username: 
@@ -326,7 +327,8 @@ def search_lost_objects():
         if not date:
             date = '%'
         
-        lost_objects = LostObjects.query.filter(LostObjects.description.contains(query) & LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
+        lost_objects = LostObjects.query.filter((LostObjects.loster.contains(query) | LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query)) \
+                                                & LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
         html = ""
         user = api.person(filters={'netid': cas.username})
         username = user.first_name + " " + user.last_name

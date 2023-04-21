@@ -508,22 +508,32 @@ textarea {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f1f1f1;
-  min-width: 160px;
+  background-color: #fff;
+  min-width: 120px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  padding: 10px 0;
   z-index: 1;
+  right: 1px;
 }
 
 .dropdown-content a {
-  color: black;
-  padding: 12px 16px;
+  color: #333;
+  padding: 10px 20px;
   text-decoration: none;
   display: block;
+  font-weight: normal;
 }
 
-.dropdown-content a:hover {background-color: #ddd; text-decoration: none; color: black}
+.dropdown-content a:hover {
+  background-color: #f5f5f5;
+  text-decoration: none;
+  color: black;
+}
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 
 /*************Messaging***********************/
 .rect {
