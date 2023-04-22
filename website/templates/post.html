@@ -37,6 +37,16 @@
                             Please provide a valid date.
                         </div>
                     </div>
+                    
+                    <style>
+                        .form-item[type="date"]::-webkit-calendar-picker-indicator {
+                            margin-left: 0;
+                            /* mm/dd/yyyy should be on the left */
+                            order: -1;
+                        }
+                    </style>
+                        
+                        
         
                     <div class="form-group">
                         <!-- <label class="input-label" for="place">Place:</label> -->
