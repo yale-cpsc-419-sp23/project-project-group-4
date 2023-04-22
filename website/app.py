@@ -82,9 +82,6 @@ def message(id):
         db.session.add(new_message)
         db.session.commit()
         return redirect(url_for('message', id=id))
-
-    # send_to_user = api.person(filters={'netid': id})
-    # send_to_username = send_to_user.first_name + " " + send_to_user.last_name
     
     all_messages = Message.query.all()
     user_messages = Message.query.filter(Message.receiver.contains(username)).all()
