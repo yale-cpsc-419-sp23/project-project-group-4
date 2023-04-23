@@ -288,7 +288,7 @@ def search_found_objects():
                         <div style="display: flex; justify-content: space-between;">
                             <h5 class="card-title">User: {found_object.founder}</h5>
                             <a style="margin-left: auto;" href="/message/{found_object.founder}" class="card-link">
-                                <i class="fa fa-telegram fa-lg" aria-hidden="true"></i>
+                                <i class="fa fa-telegram fa-2x" aria-hidden="true"></i>
                             </a>
 
                         </div>
