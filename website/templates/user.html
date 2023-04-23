@@ -92,11 +92,11 @@
 
             <div id="msg-body" class="hidden-user-body" >
                 <h3 class="heading">Messages</h3>
-                <div class="card" >
-                    <div class="card-body" >
+                <div class="card" style="max-width: 900px;">
+                    <div class="card-body " style="max-width: 900px;" >
                         {% for message in user_messages %}
                             {% if message.sender == username %}
-                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
                                 <p class="card-title message-container"><strong>{{ message.receiver }}</strong>: {{ message.content }}</p>
                                 <!-- show the object's location on the left and the object's classifier on the right -->
                                 <h5>
