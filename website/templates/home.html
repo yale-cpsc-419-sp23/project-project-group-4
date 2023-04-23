@@ -16,7 +16,6 @@
         let request = null;
   
         function getResults() {
-            if(request) request.abort(); 
             let query = $('#query').val();
             if(!query) {
                 query = "";
@@ -74,14 +73,14 @@
                 </div>
                 <div class="advanced-search">
                     
-                        <!-- <datalist id="object_list">
+                        <datalist id="object_list">
                             {% for lost_object in lost_objects %}
                                 <option value="{{ lost_object.description }}">
                             {% endfor %}
                             {% for found_object in found_objects %}
                                 <option value="{{ found_object.description }}">
                             {% endfor %}
-                        </datalist> -->
+                        </datalist>
                     
                     
                         <select id="place" name="place" class="search-item">
