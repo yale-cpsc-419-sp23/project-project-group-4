@@ -453,6 +453,7 @@ textarea {
 
 .user-body {
   min-width: 60vw;
+  max-width: 60vw;
   background: #85B2DB;
   border-radius: 50px;
   padding: 20px;
@@ -497,6 +498,11 @@ textarea {
   min-width: 300px;
   display: flex; 
   flex-direction: column;
+}
+
+.message-container {
+  min-width: none;
+  max-width: 90%;
 }
 
 /*********************** Drop Down ****************/

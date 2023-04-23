@@ -90,14 +90,14 @@
                 {% endfor %}
             </div>
 
-            <div id="msg-body" class="hidden-user-body">
+            <div id="msg-body" class="hidden-user-body" >
                 <h3 class="heading">Messages</h3>
-                <div class="card">
-                    <div class="card-body">
+                <div class="card" >
+                    <div class="card-body" >
                         {% for message in user_messages %}
                             {% if message.sender == username %}
                             <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-                                <p class="card-title"><strong>{{ message.receiver }}</strong>: {{ message.content }}</p>
+                                <p class="card-title message-container"><strong>{{ message.receiver }}</strong>: {{ message.content }}</p>
                                 <!-- show the object's location on the left and the object's classifier on the right -->
                                 <h5>
                                     <a href="/message/{{ message.receiver }}" class="card-link">
