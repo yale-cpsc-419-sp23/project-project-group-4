@@ -4,7 +4,7 @@
     <!-- Add a title saying "Post a Found Item" -->
 
 
-    <h1 align="center">{{ send_to }}</h1>
+    <h1 align-items ="center">{{ send_to }}</h1>
 
     <div>
     <div class="rect" style="height:400px;border:1px solid 
@@ -12,9 +12,9 @@
       {% for message in all_messages %}
       <!-- if the current user sent the message -->
         {% if (message.sender == user and message.receiver == send_to) %}
-          <p><strong>You: {{ message.content }}</strong></p>
+          <p>{{message.date}} |<strong> You: {{ message.content }}</strong></p>
         {% elif (message.sender == send_to and message.receiver == user) %}
-          <p><strong>{{ message.sender }}: {{ message.content }}</strong></p>
+          <p>{{message.date}} |<strong> {{ message.sender }}: {{ message.content }}</strong></p>
         {% endif %}
       {% endfor %}
     </div>

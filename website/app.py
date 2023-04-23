@@ -355,7 +355,7 @@ def search_lost_objects():
                         <div style="display: flex; justify-content: space-between;">
                             <h5 class="card-title">User: {lost_object.loster}</h5>
                             <a  style="margin-left: auto;" href="/message/{lost_object.loster}" class="card-link">
-                                <i class="fa fa-telegram" aria-hidden="true"></i>
+                                <i class="fa fa-telegram fa-2x" aria-hidden="true"></i>
                             </a>
                         </div>
                         <div class="card-image">
