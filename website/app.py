@@ -1,15 +1,12 @@
+"""All the backend for our code"""
+import os
+from datetime import datetime
 from flask import Flask, render_template, request, flash, redirect, url_for, make_response
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import func
-from sqlalchemy import func, distinct, and_, or_
+from flask_cas import CAS, login_required
+import yalies
+from logger import logger
 from .models import LostObjects, FoundObjects, People, Message
 from . import db
-from datetime import datetime
-from flask_cas import CAS, login_required, login, logout
-# We want to import the file logger.py
-from logger import logger
-import os
-import yalies
 
 app = Flask(__name__, template_folder='./templates')
 cas = CAS(app)
@@ -28,9 +25,17 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 db.init_app(app)
 
-classifiers = {"Electronic": ["Laptop", "Phone", "Headphone", "Tablet", "Charger"], "Clothing": ["Shirt", "Pants", "Shoes", "Hat"], "Miscellaneous": ["Wallet", "Keys", "ID"]}
-places = {"Residential College": ["Benjamin Franklin", "Pauli Murray", "Timothy Dwight", "Jonathan Edwards", "Ezra Stiles", "Morse", "Berkeley", "Saybrook", "Pierson"\
-                                  , "Davenport", "Trumbull", "Silliman", "Grace Hopper", "Branford"], "Schwartzman Center": ["The Elm", "Commons", "The Well"], \
+classifiers = {"Electronic": ["Laptop", "Phone", "Headphone", "Tablet", "Charger"], \
+               "Clothing": ["Shirt", "Pants", "Shoes", "Hat"], "Miscellaneous": \
+                ["Wallet", "Keys", "ID"]}
+places = {"Residential College": ["Benjamin Franklin", "Pauli Murray", \
+                                  "Timothy Dwight", "Jonathan Edwards", \
+                                  "Ezra Stiles", "Morse", "Berkeley", \
+                                    "Saybrook", "Pierson"\
+                                  , "Davenport", "Trumbull", "Silliman", \
+                                    "Grace Hopper", "Branford"], \
+                                    "Schwartzman Center": ["The Elm", \
+                                    "Commons", "The Well"], \
                                     "South": ["Miami"]}
 
 with app.app_context():
@@ -39,6 +44,7 @@ with app.app_context():
 #-----------------------------------------------------------------------
 @app.before_request
 def before_request():
+    """Before request"""
     if not request.is_secure:
         url = request.url.replace('http://', 'https://', 1)
         return redirect(url, code=301)
@@ -46,6 +52,7 @@ def before_request():
 
 @app.route('/', methods=['GET'])
 def index():
+    """Get index"""
     # Log the getting of the index page
     logger.debug('Getting the index page')
     return render_template("index.html")
@@ -53,47 +60,53 @@ def index():
 @app.route('/home', methods=['GET'])
 @login_required
 def home():
+    """Get home"""
     # log the getting of the index page
     logger.debug('Getting the home page')
     # query all the lost objects
     lost_objects = LostObjects.query.all()
     # query all the found objects
     found_objects = FoundObjects.query.all()
-    user = api.person(filters={'netid': cas.username})
-    username = user.first_name + " " + user.last_name
-    
-    return render_template("home.html", user=username, lost_objects=lost_objects, found_objects=found_objects, classifiers=classifiers, places=places)
+    user_var = api.person(filters={'netid': cas.username})
+    username = user_var.first_name + " " + user_var.last_name
+
+    return render_template("home.html", user=username, lost_objects=lost_objects, \
+                           found_objects=found_objects, classifiers=classifiers, places=places)
 
 @app.route('/post', methods=['GET'])
 # @login_required
 def post():
-    user = api.person(filters={'netid': cas.username})
-    username = user.first_name + " " + user.last_name
+    """Get post"""
+    user_var = api.person(filters={'netid': cas.username})
+    username = user_var.first_name + " " + user_var.last_name
     return render_template("post.html", user=username, classifiers=classifiers, places=places)
 
 @app.route('/message/<id>', methods=['GET', 'POST'])
 @login_required
 def message(id):
-    user = api.person(filters={'netid': cas.username})
-    username = user.first_name + " " + user.last_name
+    """Get message"""
+    user_var = api.person(filters={'netid': cas.username})
+    username = user_var.first_name + " " + user_var.last_name
     if request.method == 'POST':
         msg = request.form.get('message')
         new_message = Message(sender=username, receiver=id, content=msg)
         db.session.add(new_message)
         db.session.commit()
         return redirect(url_for('message', id=id))
-    
+
     all_messages = Message.query.all()
     user_messages = Message.query.filter(Message.receiver.contains(username)).all()
     sent_messages = Message.query.filter(Message.sender.contains(username)).all()
-    return render_template("message.html", user=username, send_to=id, sent_messages=sent_messages, user_messages=user_messages, all_messages=all_messages)
-    
+    return render_template("message.html", user=username, send_to=id, sent_messages=sent_messages, \
+                           user_messages=user_messages, all_messages=all_messages)
+
 # Post lost item
 @app.route('/post_loss', methods=['POST'])
 @login_required
 def post_loss():
-    user = api.person(filters={'netid': cas.username})
-    loster = user.first_name + " " + user.last_name
+    """Post lost"""
+    user_var = api.person(filters={'netid': cas.username})
+    loster = user_var.first_name + " " + user_var.last_name
     description = request.form.get('description')
     place = request.form.get('place')
     classifier = request.form.get('classifier')
@@ -108,7 +121,9 @@ def post_loss():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         image = filename
 
-    new_lost_object = LostObjects(loster=loster, description=description, place=place, classifier=classifier, lost_date=datetime.strptime(lost_date, '%Y-%m-%d'), image=image)
+    new_lost_object = LostObjects(loster=loster, description=description, place=place, \
+                                  classifier=classifier, \
+                                    lost_date=datetime.strptime(lost_date, '%Y-%m-%d'), image=image)
     db.session.add(new_lost_object)
     db.session.commit()
     flash('Object added!', category='success')
@@ -118,6 +133,7 @@ def post_loss():
 @app.route('/update_lost_object/<id>', methods=['GET', 'POST'])
 @login_required
 def update_lost_object(id):
+    """Update lost"""
     lost_object = LostObjects.query.get_or_404(id)
     if request.method == 'POST':
         lost_object.description = request.form.get('description')
@@ -145,14 +161,16 @@ def update_lost_object(id):
             return redirect(url_for('user'))
     else:
         date = lost_object.lost_date.strftime('%Y-%m-%d')
-        user = api.person(filters={'netid': cas.username})
-        username = user.first_name + " " + user.last_name
-        return render_template("update_loss.html", user=username, lost_object=lost_object, date=date, places=places, classifiers=classifiers)
+        user_var = api.person(filters={'netid': cas.username})
+        username = user_var.first_name + " " + user_var.last_name
+        return render_template("update_loss.html", user=username, lost_object=lost_object, \
+                               date=date, places=places, classifiers=classifiers)
 
 # make a route to delete a lost object use a route that would be like /delete-lost-object/<id>
 @app.route('/delete-lost-object/<id>', methods=['GET'])
 @login_required
 def delete_lost_object(id):
+    """Delete lost"""
     # query the lost object with the id
     lost_object = LostObjects.query.filter_by(id=id).first()
     # delete the lost object
@@ -162,13 +180,13 @@ def delete_lost_object(id):
     flash('Object Deleted', category='error')
     return redirect(url_for('user'))
 
-################################################################################################################################################
 # Post found item
 @app.route('/post_found', methods=['POST'])
 @login_required
 def post_found():
-    user = api.person(filters={'netid': cas.username})
-    founder = user.first_name + " " + user.last_name
+    """Post found"""
+    user_var = api.person(filters={'netid': cas.username})
+    founder = user_var.first_name + " " + user_var.last_name
     description = request.form.get('description')
     place = request.form.get('place')
     classifier = request.form.get('classifier')
@@ -184,7 +202,10 @@ def post_found():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         image = filename
 
-    new_found_object = FoundObjects(founder=founder, description=description, place=place, classifier=classifier, found_date=datetime.strptime(found_date, '%Y-%m-%d'), image=image)
+    new_found_object = FoundObjects(founder=founder, description=description, place=place, \
+                                    classifier=classifier, \
+                                        found_date=datetime.strptime(found_date, '%Y-%m-%d'), \
+                                            image=image)
 
     db.session.add(new_found_object)
     db.session.commit()
@@ -195,6 +216,7 @@ def post_found():
 @app.route('/update_found_object/<id>', methods=['GET', 'POST'])
 @login_required
 def update_found_object(id):
+    """Update found"""
     found_object = FoundObjects.query.get_or_404(id)
     if request.method == 'POST':
         found_object.description = request.form.get('description')
@@ -210,7 +232,7 @@ def update_found_object(id):
         else:
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             image = filename
-        
+
         found_object.image = image
 
         try:
@@ -222,14 +244,17 @@ def update_found_object(id):
             return redirect(url_for('user'))
     else:
         date = found_object.found_date.strftime('%Y-%m-%d')
-        user = api.person(filters={'netid': cas.username})
-        username = user.first_name + " " + user.last_name
-        return render_template("update_found.html", user=username, found_object=found_object, date=date, places=places, classifiers=classifiers)
+        user_var = api.person(filters={'netid': cas.username})
+        username = user_var.first_name + " " + user_var.last_name
+        return render_template("update_found.html", user=username, \
+                               found_object=found_object, date=date, \
+                                places=places, classifiers=classifiers)
 
 # make a route to delete a found object use a route that would be like /delete-found-object/<id>
 @app.route('/delete-found-object/<id>', methods=['GET'])
 @login_required
 def delete_found_object(id):
+    """Delete found"""
     # query the found object with the id
     found_object = FoundObjects.query.filter_by(id=id).first()
     # delete the found object
@@ -238,16 +263,17 @@ def delete_found_object(id):
     # kleep the user on the same page
     flash('Object Deleted', category='error')
     return redirect(url_for('user'))
-#################################################################################################################################################
+
 @app.route('/search-found-objects', methods=['GET', 'POST'])
 @login_required
 def search_found_objects():
+    """Search found"""
     if request.method == 'POST':
         query = request.args.get('query')
         place = request.args.get('place')
         classifier = request.args.get('classifier')
         date = request.args.get('lost_date')
-        if not query: 
+        if not query:
             query = '%'
         if not place:
             place = '%'
@@ -255,33 +281,36 @@ def search_found_objects():
             classifier = '%'
         if not date:
             date = '%'
-        
-        user = api.person(filters={'netid': cas.username})
-        username = user.first_name + " " + user.last_name
-        
-        found_objects = FoundObjects.query.filter((FoundObjects.founder.contains(query) | FoundObjects.description.contains(query) | FoundObjects.place.contains(query) | FoundObjects.classifier.contains(query)) \
-                                                  & FoundObjects.place.contains(place) & FoundObjects.classifier.contains(classifier) & FoundObjects.found_date.contains(date)).all()
+
+        user_var = api.person(filters={'netid': cas.username})
+        username = user_var.first_name + " " + user_var.last_name
+
+        found_objects = FoundObjects.query.filter((FoundObjects.founder.contains(query) | \
+                                                   FoundObjects.description.contains(query) | \
+                                                    FoundObjects.place.contains(query) | \
+                                                    FoundObjects.classifier.contains(query)) \
+                                                  & FoundObjects.place.contains(place) & \
+                                                    FoundObjects.classifier.contains(classifier)\
+                                                    & FoundObjects.found_date.contains(date)).all()
         html = ""
         for found_object in found_objects:
-            if found_object.founder == username: 
+            if found_object.founder == username:
                 html += f"""
                 <div class="card my-card">
                     <div class="card-body">
-                        
                         <h5 class="card-title">User: {found_object.founder}</h5>
                         <div class="card-image">
                             <img src="../static/images/{found_object.image}" alt="{found_object.description}">
-                        </div>  
+                        </div>
                         <p class="card-text">Description: {found_object.description}</p>
                         <p class="card-text">Date: {found_object.found_date}</p>
                         <!-- show the object's location on the left and the object's classifier on the right -->
                         <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {found_object.place} | {found_object.classifier}</h6>
                         <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
-                    
                     </div>
                 </div>
                 """
-            else: 
+            else:
                 html += f"""
                 <div class="card my-card">
                     <div class="card-body">
@@ -290,11 +319,10 @@ def search_found_objects():
                             <a style="margin-left: auto;" href="/message/{found_object.founder}" class="card-link">
                                 <i class="fa fa-telegram fa-2x" aria-hidden="true"></i>
                             </a>
-
                         </div>
                         <div class="card-image">
                             <img src="../static/images/{found_object.image}" alt="{found_object.description}">
-                        </div>  
+                        </div>
                         <p class="card-text">Description: {found_object.description}</p>
                         <p class="card-text">Date: {found_object.found_date}</p>
                         <!-- show the object's location on the left and the object's classifier on the right -->
@@ -304,19 +332,20 @@ def search_found_objects():
                 </div>
                 """
 
-        return make_response(html) 
+        return make_response(html)
 
 # Search objects
 # make a /search-objects route that would take a query string and search for the lost objects
 @app.route('/search-lost-objects', methods=['GET', 'POST'])
 @login_required
 def search_lost_objects():
+    """Search lost"""
     if request.method == 'POST':
         query = request.args.get('query')
         place = request.args.get('place')
         classifier = request.args.get('classifier')
         date = request.args.get('lost_date')
-        if not query: 
+        if not query:
             query = '%'
         if not place:
             place = '%'
@@ -324,14 +353,19 @@ def search_lost_objects():
             classifier = '%'
         if not date:
             date = '%'
-        
-        lost_objects = LostObjects.query.filter((LostObjects.loster.contains(query) | LostObjects.description.contains(query) | LostObjects.place.contains(query) | LostObjects.classifier.contains(query)) \
-                                                & LostObjects.place.contains(place) & LostObjects.classifier.contains(classifier) & LostObjects.lost_date.contains(date)).all()
+
+        lost_objects = LostObjects.query.filter((LostObjects.loster.contains(query) | \
+                                                 LostObjects.description.contains(query) | \
+                                                LostObjects.place.contains(query) | \
+                                                LostObjects.classifier.contains(query)) \
+                                                & LostObjects.place.contains(place) & \
+                                                LostObjects.classifier.contains(classifier) & \
+                                                LostObjects.lost_date.contains(date)).all()
         html = ""
-        user = api.person(filters={'netid': cas.username})
-        username = user.first_name + " " + user.last_name
+        user_var = api.person(filters={'netid': cas.username})
+        username = user_var.first_name + " " + user_var.last_name
         for lost_object in lost_objects:
-            if lost_object.loster == username: 
+            if lost_object.loster == username:
                 html += f"""
                 <div class="my-card card">
                     <div class="card-body">
@@ -344,11 +378,10 @@ def search_lost_objects():
                         <!-- show the object's location on the left and the object's classifier on the right -->
                         <h6 class="card-subtitle mb-2 text-muted">Location/Classifier: {lost_object.place} | {lost_object.classifier}</h6>
                         <!-- show the object's omage with size of 200x200 and circle it and put it to the right of the card -->
-                        
                     </div>
                 </div>
                 """
-            else: 
+            else:
                 html += f"""
                 <div class="my-card card">
                     <div class="card-body">
@@ -370,33 +403,35 @@ def search_lost_objects():
                 </div>
                 """
         return make_response(html)
-        
 
 @app.route('/user', methods=['GET'])
 @login_required
 def user():
+    """Get user page"""
     # log the getting of the index page
     logger.debug('Getting the user objects page')
     # get the data for this specific user
-    user = api.person(filters={'netid': cas.username})
-    username = user.first_name + " " + user.last_name
-    userimage = user.image
+    user_var = api.person(filters={'netid': cas.username})
+    username = user_var.first_name + " " + user_var.last_name
+    userimage = user_var.image
     user_data = People.query.filter(People.username.contains(username)).all()
     user_lost_objects = LostObjects.query.filter(LostObjects.loster.contains(username)).all()
     user_found_objects = FoundObjects.query.filter(FoundObjects.founder.contains(username)).all()
     # get the data for this specific user
-    user_messages = Message.query.filter(Message.receiver.contains(username) | Message.sender.contains(username)).all()
-    
+    user_messages = Message.query.filter(Message.receiver.contains(username) | \
+                                         Message.sender.contains(username)).all()
+
     last_messages = []
     pairs = []
 
-    for message in reversed(user_messages):
-        if [message.receiver, message.sender] not in pairs:
-            pairs.append([message.receiver, message.sender])
-            pairs.append([message.sender, message.receiver])
-            last_messages.append(message)
-            
-        
-    
-    return render_template("user.html", username=username, image=userimage, user_data=user_data, user_lost_objects=user_lost_objects, user_found_objects=user_found_objects, \
-                           num_lost=len(user_lost_objects), num_found=len(user_found_objects), user_messages=last_messages)
+    for msg in reversed(user_messages):
+        if [msg.receiver, msg.sender] not in pairs:
+            pairs.append([msg.receiver, msg.sender])
+            pairs.append([msg.sender, msg.receiver])
+            last_messages.append(msg)
+
+    return render_template("user.html", username=username, image=userimage, user_data=user_data, \
+                           user_lost_objects=user_lost_objects, \
+                            user_found_objects=user_found_objects, \
+                           num_lost=len(user_lost_objects), \
+                            num_found=len(user_found_objects), user_messages=last_messages)
