@@ -106,6 +106,7 @@
                                 </h5>
                             </div>
                             {% else %}
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between;"></div>
                                 <p class="card-title"><strong>{{ message.sender }}</strong>: {{ message.content }}</p>
                                 <!-- show the object's location on the left and the object's classifier on the right -->
                                 <h5>
@@ -113,6 +114,7 @@
                                         <i class="fa fa-telegram" aria-hidden="true"></i>
                                     </a>
                                 </h5>
+                            </div>
                             {% endif %}
                         {% endfor %}
                     </div>
