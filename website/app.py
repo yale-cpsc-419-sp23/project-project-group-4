@@ -27,16 +27,19 @@ db.init_app(app)
 
 classifiers = {"Electronic": ["Laptop", "Phone", "Headphone", "Tablet", "Charger"], \
                "Clothing": ["Shirt", "Pants", "Shoes", "Hat"], "Miscellaneous": \
-                ["Wallet", "Keys", "ID"]}
+                ["Wallet", "Keys", "ID", "Other"]}
 places = {"Residential College": ["Benjamin Franklin", "Pauli Murray", \
                                   "Timothy Dwight", "Jonathan Edwards", \
                                   "Ezra Stiles", "Morse", "Berkeley", \
-                                    "Saybrook", "Pierson"\
-                                  , "Davenport", "Trumbull", "Silliman", \
-                                    "Grace Hopper", "Branford"], \
+                                    "Saybrook", "Pierson", "Davenport", \
+                                    "Trumbull", "Silliman", \
+                                    "Grace Hopper", "Branford", "Old Campus"], \
                                     "Schwartzman Center": ["The Elm", \
                                     "Commons", "The Well"], \
-                                    "South": ["Miami"]}
+                                    "Libraries": ["Sterling", "Bass", "Beinecke"],\
+                                    "Academic Buildings": ["Linsly-Chittenden Hall", \
+                                    "Arthur K. Watson Hall", "William L. Harkness Hall", \
+                                    "Humanities Quadrangle"], "Miscellaneous": ["Other"]}
 
 with app.app_context():
     db.create_all()
