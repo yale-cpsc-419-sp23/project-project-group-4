@@ -31,6 +31,14 @@
         - UI improvements to make website more visually appealing
         - Note: Integration of external messaging methods (email, phone) was not completing as we feel there is no need to have this given our current messaging system built into our app. It would not make any sense.
         - Additional: We have added Yale CAS Login within our app
+ - April 23: Final done
+    - Additional Features:
+        - User login and authentication: Allow users to log in and authenticate their identity before using the web app, ensuring the privacy and security of user data (through Yale CAS Login)
+        - Bug fixes and stability improvements
+        - UI tweaks based on needs
+        - Additional feature requests
+        - Testing and performance optimization
+        - Note: We have also added user profile pictures, improved messaging system similar to iMessage, and user names instead of netid
 
 
 ## 🤔 How to run?
