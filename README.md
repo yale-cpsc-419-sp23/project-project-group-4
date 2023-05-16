@@ -1,4 +1,11 @@
-# project-project-group-4
+# Yost and Yound
+
+## 💻 Tech Stack & Auxiliary Technologies
+
+- Database: Sqlite, SQLAlchemy
+- Back-end: Python-Flask
+- Front-end: Jinja, HTML, CSS, Javascript, JQuery
+- Third party technologies: Yale-CAS, Yalies API
 
 ## 🗓 Updates Timeline
 
